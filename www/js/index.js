@@ -513,11 +513,13 @@ function onDeviceReady() {
                 $("#TipiServizio").addClass('updated_class');
 
                 //ora chiama quella successiva
-                getPostazioniListFromServer();
+                //getPostazioniListFromServer();
+                setUltimoAggiornamento();
             }
         }
     }
 
+    /*
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
 
@@ -698,7 +700,7 @@ function onDeviceReady() {
         }
 
     }
-
+*/
     function setUltimoAggiornamento(msg) {
         console.log(msg);
         global_ultimo_aggiornamento=getDateTime();
