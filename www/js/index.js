@@ -724,6 +724,8 @@ function onDeviceReady() {
     function setUltimoAggiornamento(msg) {
         $("#menuhome").show();
         $("#finestrasincro").hide();
+        $(".sincrotable").removeClass("updated_class");
+        $(".sincrotable").addClass("updating_class");
         console.log(msg);
         global_ultimo_aggiornamento=getDateTime();
         db.transaction(
