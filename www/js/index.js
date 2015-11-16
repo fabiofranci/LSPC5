@@ -676,7 +676,7 @@ function onDeviceReady() {
                     }
                     i++;
                 });
-                //alert(rigaselect);
+                alert(rigaselect);
                 console.log(rigaselect);
                 if (rigaselect) {
                     //ora può lanciare la transazione
