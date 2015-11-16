@@ -660,12 +660,12 @@ function onDeviceReady() {
 
     function getIspezioniListFromServer() {
         console.log("Dentro getIspezioniListFromServer");
-        //alert("Dentro getIspezioniListFromServer");
+        alert("Dentro getIspezioniListFromServer");
          rigaselect='';
 
         $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getIspezioniListFromServer post success");
-
+                alert("Dentro success");
                 ispezioni_server = data.items;
                 var i=0;
                 $.each(ispezioni_server, function (index, isp) {
@@ -703,6 +703,7 @@ function onDeviceReady() {
 
                             //ora chiama quella successiva
                             alert("Ho finito 1");
+                            setUltimoAggiornamento('getIspezioniListFromServer');
                             //alert("chiamerei getIspezioniListFromServer 1");
                         }
                     );
@@ -712,11 +713,11 @@ function onDeviceReady() {
 
                     //ora chiama quella successiva
                     alert("Ho finito 2");
+                    setUltimoAggiornamento('getIspezioniListFromServer');
                     //alert("chiamerei getIspezioniListFromServer 2");
                 }
             }
         );
-        //setUltimoAggiornamento('getIspezioniListFromServer');
     }
 
 
