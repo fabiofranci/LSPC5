@@ -379,7 +379,7 @@ function onDeviceReady() {
                         console.log("getClientiListFromServer post success finito");
 
                         //ora chiama quella successiva
-                        alert("chiamerei getSediClientiListFromServer 1");
+                        //alert("chiamerei getSediClientiListFromServer 1");
                         getSediClientiListFromServer();
                         //setUltimoAggiornamento('getClientiListFromServer');
                     }
@@ -392,7 +392,7 @@ function onDeviceReady() {
                 console.log("getClientiListFromServer post success finito");
 
                 //ora chiama quella successiva
-                alert("chiamerei getSediClientiListFromServer 2");
+                //alert("chiamerei getSediClientiListFromServer 2");
                 getSediClientiListFromServer();
 
             }
@@ -425,8 +425,6 @@ function onDeviceReady() {
                         function (tx3) { tx3.executeSql(rigaselect); },
                         onDbError,
                         function () {
-                            //alert(i+" clienti inseriti");
-
                             db.transaction(function (tx) {
                                 tx.executeSql('SELECT * FROM SERVER_SEDI_CLIENTI', [], function (tx, results) {
                                         var len = results.rows.length, i;
@@ -443,24 +441,24 @@ function onDeviceReady() {
 
                             $("#SediClienti").removeClass('updating_class');
                             $("#SediClienti").addClass('updated_class');
-                            alert("chiamerei tiposervizio 1");
+                            //alert("chiamerei tiposervizio 1");
                             //ora chiama quella successiva
-                            //getTipiServizioListFromServer();
+                            getTipiServizioListFromServer();
                         }
                     );
                 } else {
                     $("#SediClienti").removeClass('updating_class');
                     $("#SediClienti").addClass('updated_class');
                     //ora chiama quella successiva
-                    alert("chiamerei tiposervizio 2");
-                    //getTipiServizioListFromServer();
+                    //alert("chiamerei tiposervizio 2");
+                    getTipiServizioListFromServer();
                 }
             }
         );
 
         //setUltimoAggiornamento('getSediClientiListFromServer');
     }
-    /*
+
         function getTipiServizioListFromServer() {
         console.log("Dentro getTipiServizioListFromServer");
 
@@ -478,34 +476,45 @@ function onDeviceReady() {
                 i++;
             });
             console.log(rigaselect);
-            //ora può lanciare la transazione
-            db.transaction(
-                function (tx3) { tx3.executeSql(rigaselect); },
-                onDbError,
-                function () {
-                    //alert(i+" clienti inseriti");
+            if (rigaselect) {
 
-                    db.transaction(function (tx) {
-                        tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
-                                var len = results.rows.length, i;
-                                for (i = 0; i < len; i++){
-                                    var id_servizio=results.rows.item(i).id;
-                                    descrizioniservizio[id_servizio]=results.rows.item(i).descrizione_servizio;
-                                    tipiservizio[id_servizio]=results.rows.item(i).servizio;
-                                    //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
+                //ora può lanciare la transazione
+                db.transaction(
+                    function (tx3) {
+                        tx3.executeSql(rigaselect);
+                    },
+                    onDbError,
+                    function () {
+                        //alert(i+" clienti inseriti");
+
+                        db.transaction(function (tx) {
+                            tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
+                                    var len = results.rows.length, i;
+                                    for (i = 0; i < len; i++) {
+                                        var id_servizio = results.rows.item(i).id;
+                                        descrizioniservizio[id_servizio] = results.rows.item(i).descrizione_servizio;
+                                        tipiservizio[id_servizio] = results.rows.item(i).servizio;
+                                        //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
+                                    }
+                                }, function () {
                                 }
-                            }, function() {
-                            }
-                        );
-                    });
+                            );
+                        });
 
-                    $("#TipiServizio").removeClass('updating_class');
-                    $("#TipiServizio").addClass('updated_class');
+                        $("#TipiServizio").removeClass('updating_class');
+                        $("#TipiServizio").addClass('updated_class');
 
-                    //ora chiama quella successiva
-                    getPostazioniListFromServer();
-                }
-            );
+                        //ora chiama quella successiva
+                        getPostazioniListFromServer();
+                    }
+                );
+            } else {
+                $("#TipiServizio").removeClass('updating_class');
+                $("#TipiServizio").addClass('updated_class');
+
+                //ora chiama quella successiva
+                getPostazioniListFromServer();
+            }
         }
 
 
@@ -529,20 +538,30 @@ function onDeviceReady() {
                 });
                 //alert(rigaselect);
                 console.log(rigaselect);
-                //ora può lanciare la transazione
-                db.transaction(
-                    function (tx3) { tx3.executeSql(rigaselect); },
-                    onDbError,
-                    function () {
-                        //alert(i+" clienti inseriti");
+                if (rigaselect) {
+                    //ora può lanciare la transazione
+                    db.transaction(
+                        function (tx3) {
+                            tx3.executeSql(rigaselect);
+                        },
+                        onDbError,
+                        function () {
+                            //alert(i+" clienti inseriti");
 
-                        $("#Postazioni").removeClass('updating_class');
-                        $("#Postazioni").addClass('updated_class');
+                            $("#Postazioni").removeClass('updating_class');
+                            $("#Postazioni").addClass('updated_class');
 
-                        //ora chiama quella successiva
-                        getVisiteListFromServer();
-                    }
-                );
+                            //ora chiama quella successiva
+                            getVisiteListFromServer();
+                        }
+                    );
+                } else {
+                    $("#Postazioni").removeClass('updating_class');
+                    $("#Postazioni").addClass('updated_class');
+
+                    //ora chiama quella successiva
+                    getVisiteListFromServer();
+                }
             }
         );
     }
@@ -563,20 +582,30 @@ function onDeviceReady() {
                 });
                 //alert(rigaselect);
                 console.log(rigaselect);
-                //ora può lanciare la transazione
-                db.transaction(
-                    function (tx3) { tx3.executeSql(rigaselect); },
-                    onDbError,
-                    function () {
-                        //alert(i+" clienti inseriti");
+                if (rigaselect) {
+                    //ora può lanciare la transazione
+                    db.transaction(
+                        function (tx3) {
+                            tx3.executeSql(rigaselect);
+                        },
+                        onDbError,
+                        function () {
+                            //alert(i+" clienti inseriti");
 
-                        $("#Visite").removeClass('updating_class');
-                        $("#Visite").addClass('updated_class');
+                            $("#Visite").removeClass('updating_class');
+                            $("#Visite").addClass('updated_class');
 
-                        //ora chiama quella successiva
-                        getIspezioniListFromServer();
-                    }
-                );
+                            //ora chiama quella successiva
+                            getIspezioniListFromServer();
+                        }
+                    );
+                } else {
+                    $("#Visite").removeClass('updating_class');
+                    $("#Visite").addClass('updated_class');
+
+                    //ora chiama quella successiva
+                    getIspezioniListFromServer();
+                }
             }
         );
     }
@@ -598,20 +627,30 @@ function onDeviceReady() {
                 });
                 //alert(rigaselect);
                 console.log(rigaselect);
-                //ora può lanciare la transazione
-                db.transaction(
-                    function (tx3) { tx3.executeSql(rigaselect); },
-                    onDbError,
-                    function () {
-                        //alert(i+" clienti inseriti");
+                if (rigaselect) {
+                    //ora può lanciare la transazione
+                    db.transaction(
+                        function (tx3) {
+                            tx3.executeSql(rigaselect);
+                        },
+                        onDbError,
+                        function () {
+                            //alert(i+" clienti inseriti");
 
-                        $("#Ispezioni").removeClass('updating_class');
-                        $("#Ispezioni").addClass('updated_class');
+                            $("#Ispezioni").removeClass('updating_class');
+                            $("#Ispezioni").addClass('updated_class');
 
-                        //ora chiama quella successiva
-                        getUsersListFromServer();
-                    }
-                );
+                            //ora chiama quella successiva
+                            getUsersListFromServer();
+                        }
+                    );
+                } else {
+                    $("#Ispezioni").removeClass('updating_class');
+                    $("#Ispezioni").addClass('updated_class');
+
+                    //ora chiama quella successiva
+                    getUsersListFromServer();
+                }
             }
         );
         //setUltimoAggiornamento('getIspezioniListFromServer');
@@ -634,20 +673,30 @@ function onDeviceReady() {
             });
             //alert(rigaselect);
             console.log(rigaselect);
-            //ora può lanciare la transazione
-            db.transaction(
-                function (tx3) { tx3.executeSql(rigaselect); },
-                onDbError,
-                function () {
-                    //alert(i+" clienti inseriti");
+            if (rigaselect) {
+                //ora può lanciare la transazione
+                db.transaction(
+                    function (tx3) {
+                        tx3.executeSql(rigaselect);
+                    },
+                    onDbError,
+                    function () {
+                        //alert(i+" clienti inseriti");
 
-                    $("#Users").removeClass('updating_class');
-                    $("#Users").addClass('updated_class');
-                    $("#menuhome").show();
-                    $("#finestrasincro").hide();
-                    setUltimoAggiornamento('getUsersListFromServer');
-                }
-            );
+                        $("#Users").removeClass('updating_class');
+                        $("#Users").addClass('updated_class');
+                        $("#menuhome").show();
+                        $("#finestrasincro").hide();
+                        setUltimoAggiornamento('getUsersListFromServer');
+                    }
+                );
+            } else {
+                $("#Users").removeClass('updating_class');
+                $("#Users").addClass('updated_class');
+                $("#menuhome").show();
+                $("#finestrasincro").hide();
+                setUltimoAggiornamento('getUsersListFromServer');
+            }
         }
 
     }
