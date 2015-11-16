@@ -519,7 +519,7 @@ function onDeviceReady() {
                         }
                         i++;
                     });
-                    alert(rigaselect);
+                    //alert(rigaselect);
                     console.log(rigaselect);
                     if (rigaselect) {
                         //ora può lanciare la transazione
@@ -642,8 +642,8 @@ function onDeviceReady() {
                             $("#Visite").addClass('updated_class');
 
                             //ora chiama quella successiva
-                            //getIspezioniListFromServer();
-                            alert("chiamerei getIspezioniListFromServer 1");
+                            getIspezioniListFromServer();
+                            //alert("chiamerei getIspezioniListFromServer 1");
                         }
                     );
                 } else {
@@ -651,13 +651,13 @@ function onDeviceReady() {
                     $("#Visite").addClass('updated_class');
 
                     //ora chiama quella successiva
-                    //getIspezioniListFromServer();
-                    alert("chiamerei getIspezioniListFromServer 2");
+                    getIspezioniListFromServer();
+                    //alert("chiamerei getIspezioniListFromServer 2");
                 }
             }
         );
     }
-    /*
+
     function getIspezioniListFromServer() {
         console.log("Dentro getIspezioniListFromServer");
          rigaselect='';
@@ -706,7 +706,7 @@ function onDeviceReady() {
         //setUltimoAggiornamento('getIspezioniListFromServer');
     }
 
-*/
+
     function setUltimoAggiornamento(msg) {
         $("#menuhome").show();
         $("#finestrasincro").hide();
