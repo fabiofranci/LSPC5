@@ -342,6 +342,8 @@ function onDeviceReady() {
 
     function getClientiListFromServer() {
         var iclienti=0;
+        var local_ultimo_aggiornamento=getDateTime();
+
         //alert("getClientiListFromServer prima del post");
         console.log("getClientiListFromServer prima del post");
         //va messo un please wait e tolto solo alla fine di tutto
@@ -356,9 +358,9 @@ function onDeviceReady() {
             $.each(clienti_server, function (index, cliente) {
                 //alert('cliente numero '+i+' --> id='+cliente.id+' nome='+cliente.nome_o_ragione_sociale);
                 if (i==0) {
-                    rigaselect="INSERT OR REPLACE INTO SERVER_CLIENTI (id, nome_o_ragione_sociale, partita_iva, codice_fiscale, tipo, persona_di_riferimento, telefono, email, note) SELECT '"+cliente.id+"' AS id, '"+cliente.nome_o_ragione_sociale+"' AS nome_o_ragione_sociale, '"+cliente.partita_iva+"' as partita_iva, '"+cliente.codice_fiscale+"' AS codice_fiscale,'"+cliente.tipo+"' AS tipo, '"+cliente.persona_di_riferimento+"' AS persona_di_riferimento,'"+cliente.telefono+"' AS telefono, '"+cliente.email+"' AS email,'"+cliente.note+"' AS note  ";
+                    rigaselect="INSERT OR REPLACE INTO SERVER_CLIENTI (id, nome_o_ragione_sociale, partita_iva, codice_fiscale, tipo, persona_di_riferimento, telefono, email, note, ultimo_aggiornamento) SELECT '"+cliente.id+"' AS id, '"+cliente.nome_o_ragione_sociale+"' AS nome_o_ragione_sociale, '"+cliente.partita_iva+"' as partita_iva, '"+cliente.codice_fiscale+"' AS codice_fiscale,'"+cliente.tipo+"' AS tipo, '"+cliente.persona_di_riferimento+"' AS persona_di_riferimento,'"+cliente.telefono+"' AS telefono, '"+cliente.email+"' AS email,'"+cliente.note+"' AS note,'"+local_ultimo_aggiornamento+"' AS ultimo_aggiornamento  ";
                 } else {
-                    rigaselect+=" UNION ALL SELECT '"+cliente.id+"','"+cliente.nome_o_ragione_sociale+"','"+cliente.partita_iva+"','"+cliente.codice_fiscale+"','"+cliente.tipo+"','"+cliente.persona_di_riferimento+"','"+cliente.telefono+"','"+cliente.email+"','"+cliente.note+"'";
+                    rigaselect+=" UNION ALL SELECT '"+cliente.id+"','"+cliente.nome_o_ragione_sociale+"','"+cliente.partita_iva+"','"+cliente.codice_fiscale+"','"+cliente.tipo+"','"+cliente.persona_di_riferimento+"','"+cliente.telefono+"','"+cliente.email+"','"+cliente.note+"','"+local_ultimo_aggiornamento+"'";
                 }
                 i++;
             });
@@ -403,6 +405,7 @@ function onDeviceReady() {
 
     function getSediClientiListFromServer() {
         console.log("Dentro getSediClientiListFromServer");
+        var local_ultimo_aggiornamento=getDateTime();
 
         $.getJSON(serviceURL + 'gettablesediclienti.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getSediClientiListFromServer post success");
@@ -411,9 +414,9 @@ function onDeviceReady() {
                 var i=0;
                 $.each(sedi_clienti_server, function (index, cliente) {
                     if (i==0) {
-                        rigaselect="INSERT OR REPLACE INTO SERVER_SEDI_CLIENTI (id, cliente_e_sede, sede, indirizzo, CAP, citta, provincia, persona_di_riferimento, telefono, email, note) SELECT '"+cliente.id+"' AS id, '"+cliente.cliente_e_sede+"' AS cliente_e_sede, '"+cliente.sede+"' as sede, '"+cliente.indirizzo+"' AS indirizzo,'"+cliente.CAP+"' AS CAP, '"+cliente.citta+"' AS citta,'"+cliente.provincia+"' AS provincia, '"+cliente.persona_di_riferimento+"' AS persona_di_riferimento,'"+cliente.telefono+"' AS telefono, '"+cliente.email+"' AS email,'"+cliente.note+"' AS note  ";
+                        rigaselect="INSERT OR REPLACE INTO SERVER_SEDI_CLIENTI (id, cliente_e_sede, sede, indirizzo, CAP, citta, provincia, persona_di_riferimento, telefono, email, note) SELECT '"+cliente.id+"' AS id, '"+cliente.cliente_e_sede+"' AS cliente_e_sede, '"+cliente.sede+"' as sede, '"+cliente.indirizzo+"' AS indirizzo,'"+cliente.CAP+"' AS CAP, '"+cliente.citta+"' AS citta,'"+cliente.provincia+"' AS provincia, '"+cliente.persona_di_riferimento+"' AS persona_di_riferimento,'"+cliente.telefono+"' AS telefono, '"+cliente.email+"' AS email,'"+cliente.note+"' AS note,'"+local_ultimo_aggiornamento+"' AS ultimo_aggiornamento  ";
                     } else {
-                        rigaselect+=" UNION ALL SELECT '"+cliente.id+"','"+cliente.cliente_e_sede+"','"+cliente.sede+"','"+cliente.indirizzo+"','"+cliente.CAP+"','"+cliente.citta+"','"+cliente.provincia+"','"+cliente.persona_di_riferimento+"','"+cliente.telefono+"','"+cliente.email+"','"+cliente.note+"'";
+                        rigaselect+=" UNION ALL SELECT '"+cliente.id+"','"+cliente.cliente_e_sede+"','"+cliente.sede+"','"+cliente.indirizzo+"','"+cliente.CAP+"','"+cliente.citta+"','"+cliente.provincia+"','"+cliente.persona_di_riferimento+"','"+cliente.telefono+"','"+cliente.email+"','"+cliente.note+"','"+local_ultimo_aggiornamento+"'";
                     }
                     i++;
                 });
@@ -460,6 +463,7 @@ function onDeviceReady() {
     }
         function getTipiServizioListFromServer() {
         console.log("Dentro getTipiServizioListFromServer");
+        var local_ultimo_aggiornamento=getDateTime();
 
         $.getJSON(serviceURL + 'gettabletipiservizio.php?ult='+global_ultimo_aggiornamento, function (data) {
             console.log("getTipiServizioListFromServer post success");
