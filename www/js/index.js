@@ -463,6 +463,7 @@ function onDeviceReady() {
     }
         function getTipiServizioListFromServer() {
         console.log("Dentro getTipiServizioListFromServer");
+            rigaselect='';
         var local_ultimo_aggiornamento=getDateTime();
 
         $.getJSON(serviceURL + 'gettabletipiservizio.php?ult='+global_ultimo_aggiornamento, function (data) {
@@ -479,6 +480,7 @@ function onDeviceReady() {
                 i++;
             });
             console.log(rigaselect);
+
             if (rigaselect) {
 
                 //ora può lanciare la transazione
@@ -508,7 +510,8 @@ function onDeviceReady() {
                         $("#TipiServizio").addClass('updated_class');
 
                         //ora chiama quella successiva
-                        getPostazioniListFromServer();
+                        //getPostazioniListFromServer();
+                        setUltimoAggiornamento();
                     }
                 );
             } else {
@@ -525,6 +528,7 @@ function onDeviceReady() {
 /*
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
+         rigaselect='';
 
         $.getJSON(serviceURL + 'gettablepostazioni.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getPostazioniListFromServer post success");
@@ -570,6 +574,7 @@ function onDeviceReady() {
     }
     function getVisiteListFromServer() {
         console.log("Dentro getVisiteListFromServer");
+     rigaselect='';
         $.getJSON(serviceURL + 'gettablevisite.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getVisiteListFromServer post success");
 
@@ -613,9 +618,10 @@ function onDeviceReady() {
         );
     }
     function getIspezioniListFromServer() {
-
         console.log("Dentro getIspezioniListFromServer");
-        $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
+         rigaselect='';
+
+         $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getIspezioniListFromServer post success");
 
                 ispezioni_server = data.items;
@@ -660,7 +666,7 @@ function onDeviceReady() {
     }
     function getUsersListFromServer() {
         console.log("Dentro getUsersListFromServer");
-
+         rigaselect='';
         $.getJSON(serviceURL + 'gettableusers.php?ult='+global_ultimo_aggiornamento, function (data) {
             console.log("getUsersListFromServer post success");
 
