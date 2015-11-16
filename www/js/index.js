@@ -663,11 +663,20 @@ function onDeviceReady() {
         //alert("Dentro getIspezioniListFromServer");
          rigaselect='';
 
-         $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
+        $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getIspezioniListFromServer post success");
 
                 ispezioni_server = data.items;
                 var i=0;
+                $.each(ispezioni_server, function (index, isp) {
+                    if (i==0) {
+                        //rigaselect="INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_visita, id_sede, id_dipendente, data_inizio_visita, data_fine_visita, stato_visita) SELECT '"+visita.codice_visita+"' AS codice_visita, '"+visita.id_sede+"' AS id_sede, '"+visita.id_dipendente+"' as id_dipendente, '"+visita.data_inizio_visita+"' AS data_inizio_visita, '"+visita.data_fine_visita+"' as data_fine_visita, '"+visita.stato_visita+"' AS stato_visita";
+                    } else {
+                        //rigaselect+=" UNION ALL SELECT '"+visita.codice_visita+"','"+visita.id_sede+"','"+visita.id_dipendente+"','"+visita.data_inizio_visita+"','"+visita.data_fine_visita+"','"+visita.stato_visita+"'";
+                    }
+                    i++;
+                });
+
                 //$.each(ispezioni_server, function (index, isp) {
                 //    if (i==0) {
                 //        rigaselect="INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione, codice_postazione, codice_visita, data_ispezione, stato_postazione, stato_esca_roditori, collocato_adescante_roditori, stato_piastra_collante_insetti_striscianti, ooteche_orientalis, adulti_orientalis, ooteche_germanica, adulti_germanica, ooteche_supella_longipalpa, adulti_supella_longipalpa, ooteche_periplaneta_americana, adulti_periplaneta_americana, stato_piastra_insetti_volanti, presenza_muscidi, presenza_imenotteri_vespidi, presenza_imenotteri_calabronidi, presenza_dittere, presenza_altri_tipi_insetti, note_per_cliente, nutrie_tana, nutrie_target, presenza_target_lepidotteri, tipo_target_lepidotteri, latitudine, longitudine, ultimo_aggiornamento) SELECT '"+isp.codice_ispezione+"' AS codice_ispezione, '"+isp.codice_postazione+"' AS codice_postazione, '"+isp.codice_visita+"' AS codice_visita, '"+isp.data_ispezione+"' AS data_ispezione, '"+isp.stato_postazione+"' AS stato_postazione, '"+isp.stato_esca_roditori+"' AS stato_esca_roditori, '"+isp.collocato_adescante_roditori+"' AS collocato_adescante_roditori, '"+isp.stato_piastra_collante_insetti_striscianti+"' AS stato_piastra_collante_insetti_striscianti, '"+isp.ooteche_orientalis+"' AS ooteche_orientalis, '"+isp.adulti_orientalis+"' AS adulti_orientalis, '"+isp.ooteche_germanica+"' AS ooteche_germanica, '"+isp.adulti_germanica+"' AS adulti_germanica, '"+isp.ooteche_supella_longipalpa+"' AS ooteche_supella_longipalpa, '"+isp.adulti_supella_longipalpa+"' AS adulti_supella_longipalpa, '"+isp.ooteche_periplaneta_americana+"' AS ooteche_periplaneta_americana, '"+isp.adulti_periplaneta_americana+"' AS adulti_periplaneta_americana, '"+isp.stato_piastra_insetti_volanti+"' AS stato_piastra_insetti_volanti, '"+isp.presenza_muscidi+"' AS presenza_muscidi, '"+isp.presenza_imenotteri_vespidi+"' AS presenza_imenotteri_vespidi, '"+isp.presenza_imenotteri_calabronidi+"' AS presenza_imenotteri_calabronidi, '"+isp.presenza_dittere+"' AS presenza_dittere, '"+isp.presenza_altri_tipi_insetti+"' AS presenza_altri_tipi_insetti, '"+isp.note_per_cliente+"' AS note_per_cliente, '"+isp.nutrie_tana+"' AS nutrie_tana, '"+isp.nutrie_target+"' AS nutrie_target, '"+isp.presenza_target_lepidotteri+"' AS presenza_target_lepidotteri, '"+isp.tipo_target_lepidotteri+"' AS tipo_target_lepidotteri, '"+isp.latitudine+"' AS latitudine, '"+isp.longitudine+"' AS longitudine, '"+isp.ultimo_aggiornamento+"' AS ultimo_aggiornamento";
@@ -676,7 +685,8 @@ function onDeviceReady() {
                 //    }
                 //    i++;
                 //});
-                alert(rigaselect);
+
+                //alert(rigaselect);
                 console.log(rigaselect);
                 if (rigaselect) {
                     //ora può lanciare la transazione
@@ -693,7 +703,7 @@ function onDeviceReady() {
 
                             //ora chiama quella successiva
                             alert("Ho finito 1");
-                            //setUltimoAggiornamento('fine');
+                            //alert("chiamerei getIspezioniListFromServer 1");
                         }
                     );
                 } else {
@@ -702,7 +712,7 @@ function onDeviceReady() {
 
                     //ora chiama quella successiva
                     alert("Ho finito 2");
-                    //setUltimoAggiornamento('fine');
+                    //alert("chiamerei getIspezioniListFromServer 2");
                 }
             }
         );
