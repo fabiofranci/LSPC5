@@ -461,66 +461,62 @@ function onDeviceReady() {
 
         //setUltimoAggiornamento('getSediClientiListFromServer');
     }
-        function getTipiServizioListFromServer() {
+    function getTipiServizioListFromServer() {
         console.log("Dentro getTipiServizioListFromServer");
-            rigaselect='';
-        var local_ultimo_aggiornamento=getDateTime();
 
-        $.getJSON(serviceURL + 'gettabletipiservizio.php?ult='+global_ultimo_aggiornamento, function (data) {
-            console.log("getTipiServizioListFromServer post success");
+            $.getJSON(serviceURL + 'gettabletipiservizio.php?ult='+global_ultimo_aggiornamento, function (data) {
+                    console.log("getTipiServizioListFromServer post success");
+                    rigaselect='';
+                    tipi_servizio_server = data.items;
+                    var i=0;
+                    $.each(tipi_servizio_server, function (index, tiposervizio) {
+                        if (i==0) {
+                            rigaselect="INSERT OR REPLACE INTO SERVER_TIPI_SERVIZIO (id, servizio, descrizione_servizio) SELECT '"+tiposervizio.id+"' AS id, '"+tiposervizio.servizio+"' AS servizio, '"+tiposervizio.descrizione_servizio+"' as descrizione_servizio  ";
+                        } else {
+                            rigaselect+=" UNION ALL SELECT '"+tiposervizio.id+"','"+tiposervizio.servizio+"','"+tiposervizio.descrizione_servizio+"'";
+                        }
+                        i++;
+                    });
+                    alert(rigaselect);
+                    console.log(rigaselect);
+                    if (rigaselect) {
+                        //ora può lanciare la transazione
+                        db.transaction(
+                            function (tx3) { tx3.executeSql(rigaselect); },
+                            onDbError,
+                            function () {
+                                db.transaction(function (tx) {
+                                    descrizioniservizio.length=0;
+                                    tipiservizio.length=0;
+                                    tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
+                                            var len = results.rows.length, i;
+                                            for (i = 0; i < len; i++){
+                                                var id_servizio=results.rows.item(i).id;
+                                                descrizioniservizio[id_servizio]=results.rows.item(i).descrizione_servizio;
+                                                tipiservizio[id_servizio]=results.rows.item(i).servizio;
+                                                //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
+                                            }
+                                        }, function() {
+                                        }
+                                    );
+                                });
 
-            tipi_servizio_server = data.items;
-            var i=0;
-            $.each(tipi_servizio_server, function (index, tiposervizio) {
-                if (i==0) {
-                    rigaselect="INSERT OR REPLACE INTO SERVER_TIPI_SERVIZIO (id, servizio, descrizione_servizio) SELECT '"+tiposervizio.id+"' AS id, '"+tiposervizio.servizio+"' AS servizio, '"+tiposervizio.descrizione_servizio+"' as descrizione_servizio  ";
-                } else {
-                    rigaselect+=" UNION ALL SELECT '"+tiposervizio.id+"','"+tiposervizio.servizio+"','"+tiposervizio.descrizione_servizio+"'";
-                }
-                i++;
-            });
-            console.log(rigaselect);
-
-            if (rigaselect) {
-
-                //ora può lanciare la transazione
-                db.transaction(
-                    function (tx3) {
-                        tx3.executeSql(rigaselect);
-                    },
-                    onDbError,
-                    function () {
-                        //alert(i+" clienti inseriti");
-
-                        db.transaction(function (tx) {
-                            tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
-                                    var len = results.rows.length, i;
-                                    for (i = 0; i < len; i++) {
-                                        var id_servizio = results.rows.item(i).id;
-                                        descrizioniservizio[id_servizio] = results.rows.item(i).descrizione_servizio;
-                                        tipiservizio[id_servizio] = results.rows.item(i).servizio;
-                                        //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
-                                    }
-                                }, function () {
-                                }
-                            );
-                        });
+                                $("#TipiServizio").removeClass('updating_class');
+                                $("#TipiServizio").addClass('updated_class');
+                                alert("chiamerei getPostazioniListFromServer 1");
+                                //ora chiama quella successiva
+                                getPostazioniListFromServer();
+                            }
+                        );
+                    } else {
                         $("#TipiServizio").removeClass('updating_class');
                         $("#TipiServizio").addClass('updated_class');
                         //ora chiama quella successiva
+                        alert("chiamerei getPostazioniListFromServer 2");
                         getPostazioniListFromServer();
-                        //setUltimoAggiornamento();
                     }
-                );
-            } else {
-                $("#TipiServizio").removeClass('updating_class');
-                $("#TipiServizio").addClass('updated_class');
-                //ora chiama quella successiva
-                getPostazioniListFromServer();
-                //setUltimoAggiornamento();
-            }
-        }
-        );
+                }
+            );
     }
 
     function getPostazioniListFromServer() {
