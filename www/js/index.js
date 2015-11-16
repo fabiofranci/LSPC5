@@ -505,27 +505,24 @@ function onDeviceReady() {
                                 }
                             );
                         });
-
                         $("#TipiServizio").removeClass('updating_class');
                         $("#TipiServizio").addClass('updated_class');
-
                         //ora chiama quella successiva
-                        //getPostazioniListFromServer();
-                        setUltimoAggiornamento();
+                        getPostazioniListFromServer();
+                        //setUltimoAggiornamento();
                     }
                 );
             } else {
                 $("#TipiServizio").removeClass('updating_class');
                 $("#TipiServizio").addClass('updated_class');
-
                 //ora chiama quella successiva
-                //getPostazioniListFromServer();
-                setUltimoAggiornamento();
+                getPostazioniListFromServer();
+                //setUltimoAggiornamento();
             }
         }
+        );
     }
 
-/*
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
          rigaselect='';
@@ -709,7 +706,7 @@ function onDeviceReady() {
         }
 
     }
-*/
+
     function setUltimoAggiornamento(msg) {
         console.log(msg);
         global_ultimo_aggiornamento=getDateTime();
