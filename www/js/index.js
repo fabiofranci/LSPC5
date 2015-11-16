@@ -692,7 +692,8 @@ function onDeviceReady() {
                             $("#Ispezioni").addClass('updated_class');
 
                             //ora chiama quella successiva
-                            setUltimoAggiornamento('fine');
+                            alert("Ho finito 1");
+                            //setUltimoAggiornamento('fine');
                         }
                     );
                 } else {
@@ -700,7 +701,8 @@ function onDeviceReady() {
                     $("#Ispezioni").addClass('updated_class');
 
                     //ora chiama quella successiva
-                    setUltimoAggiornamento('fine');
+                    alert("Ho finito 2");
+                    //setUltimoAggiornamento('fine');
                 }
             }
         );
