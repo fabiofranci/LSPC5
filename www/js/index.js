@@ -565,6 +565,9 @@ function onDeviceReady() {
             }
         );
     }
+
+    
+
     function getVisiteListFromServer() {
         console.log("Dentro getVisiteListFromServer");
      rigaselect='';
@@ -700,6 +703,7 @@ function onDeviceReady() {
                 setUltimoAggiornamento('getUsersListFromServer');
             }
         }
+     );
 
     }
 
