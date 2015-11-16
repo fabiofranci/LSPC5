@@ -322,7 +322,7 @@ function onDeviceReady() {
                                             //quando arriva qui ha finito!!!
                                             $("#IspezioniSuServer").removeClass('updating_class');
                                             $("#IspezioniSuServer").addClass('updated_class');
-                                            getClientiListFromServer();
+                                            getUsersListFromServer();
                                         }, function() {
                                             //ERROR!
                                         }
@@ -340,6 +340,48 @@ function onDeviceReady() {
         });
     }
 
+    function getUsersListFromServer() {
+        console.log("Dentro getUsersListFromServer");
+        rigaselect='';
+        $.getJSON(serviceURL + 'gettableusers.php?ult='+global_ultimo_aggiornamento, function (data) {
+                console.log("getUsersListFromServer post success");
+
+                users_server = data.items;
+                var i=0;
+                $.each(users_server, function (index, user) {
+                    if (i==0) {
+                        rigaselect="INSERT OR REPLACE INTO SERVER_USERS (id, id_ruolo, PIN, Nome, Cognome, email) SELECT '"+user.id+"' AS id, '"+user.id_ruolo+"' AS id_ruolo, '"+user.id+"' as PIN, '"+user.Nome+"' AS Nome, '"+user.Cognome+"' as Cognome, '"+user.email+"' AS email";
+                    } else {
+                        rigaselect+=" UNION ALL SELECT '"+user.id+"','"+user.id_ruolo+"','"+user.PIN+"','"+user.Nome+"','"+user.Cognome+"','"+user.email+"'";
+                    }
+                    i++;
+                });
+                //alert(rigaselect);
+                console.log(rigaselect);
+                if (rigaselect) {
+                    //ora può lanciare la transazione
+                    db.transaction(
+                        function (tx3) {
+                            tx3.executeSql(rigaselect);
+                        },
+                        onDbError,
+                        function () {
+                            //alert(i+" clienti inseriti");
+
+                            $("#Users").removeClass('updating_class');
+                            $("#Users").addClass('updated_class');
+                            getClientiListFromServer();
+                        }
+                    );
+                } else {
+                    $("#Users").removeClass('updating_class');
+                    $("#Users").addClass('updated_class');
+                    getClientiListFromServer();
+                }
+            }
+        );
+
+    }
     function getClientiListFromServer() {
         var iclienti=0;
         var local_ultimo_aggiornamento=getDateTime();
@@ -566,7 +608,7 @@ function onDeviceReady() {
         );
     }
 
-    
+
 
     function getVisiteListFromServer() {
         console.log("Dentro getVisiteListFromServer");
@@ -600,7 +642,8 @@ function onDeviceReady() {
                             $("#Visite").addClass('updated_class');
 
                             //ora chiama quella successiva
-                            getIspezioniListFromServer();
+                            //getIspezioniListFromServer();
+                            alert("chiamerei getIspezioniListFromServer 1");
                         }
                     );
                 } else {
@@ -608,11 +651,13 @@ function onDeviceReady() {
                     $("#Visite").addClass('updated_class');
 
                     //ora chiama quella successiva
-                    getIspezioniListFromServer();
+                    //getIspezioniListFromServer();
+                    alert("chiamerei getIspezioniListFromServer 2");
                 }
             }
         );
     }
+    /*
     function getIspezioniListFromServer() {
         console.log("Dentro getIspezioniListFromServer");
          rigaselect='';
@@ -646,7 +691,7 @@ function onDeviceReady() {
                             $("#Ispezioni").addClass('updated_class');
 
                             //ora chiama quella successiva
-                            getUsersListFromServer();
+                            setUltimoAggiornamento('fine');
                         }
                     );
                 } else {
@@ -654,60 +699,17 @@ function onDeviceReady() {
                     $("#Ispezioni").addClass('updated_class');
 
                     //ora chiama quella successiva
-                    getUsersListFromServer();
+                    setUltimoAggiornamento('fine');
                 }
             }
         );
         //setUltimoAggiornamento('getIspezioniListFromServer');
     }
-    function getUsersListFromServer() {
-        console.log("Dentro getUsersListFromServer");
-         rigaselect='';
-        $.getJSON(serviceURL + 'gettableusers.php?ult='+global_ultimo_aggiornamento, function (data) {
-            console.log("getUsersListFromServer post success");
 
-            users_server = data.items;
-            var i=0;
-            $.each(users_server, function (index, user) {
-                if (i==0) {
-                    rigaselect="INSERT OR REPLACE INTO SERVER_USERS (id, id_ruolo, PIN, Nome, Cognome, email) SELECT '"+user.id+"' AS id, '"+user.id_ruolo+"' AS id_ruolo, '"+user.id+"' as PIN, '"+user.Nome+"' AS Nome, '"+user.Cognome+"' as Cognome, '"+user.email+"' AS email";
-                } else {
-                    rigaselect+=" UNION ALL SELECT '"+user.id+"','"+user.id_ruolo+"','"+user.PIN+"','"+user.Nome+"','"+user.Cognome+"','"+user.email+"'";
-                }
-                i++;
-            });
-            //alert(rigaselect);
-            console.log(rigaselect);
-            if (rigaselect) {
-                //ora può lanciare la transazione
-                db.transaction(
-                    function (tx3) {
-                        tx3.executeSql(rigaselect);
-                    },
-                    onDbError,
-                    function () {
-                        //alert(i+" clienti inseriti");
-
-                        $("#Users").removeClass('updating_class');
-                        $("#Users").addClass('updated_class');
-                        $("#menuhome").show();
-                        $("#finestrasincro").hide();
-                        setUltimoAggiornamento('getUsersListFromServer');
-                    }
-                );
-            } else {
-                $("#Users").removeClass('updating_class');
-                $("#Users").addClass('updated_class');
-                $("#menuhome").show();
-                $("#finestrasincro").hide();
-                setUltimoAggiornamento('getUsersListFromServer');
-            }
-        }
-     );
-
-    }
-
+*/
     function setUltimoAggiornamento(msg) {
+        $("#menuhome").show();
+        $("#finestrasincro").hide();
         console.log(msg);
         global_ultimo_aggiornamento=getDateTime();
         db.transaction(
