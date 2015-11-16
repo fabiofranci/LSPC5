@@ -193,9 +193,10 @@ function onDeviceReady() {
             //getIspezioniListFromServer();
             //setUltimoAggiornamento();
         } else {
-            alert("Nessuna connessione, sincronizzazione non possibile!");
             $("#menuhome").show();
             $("#finestrasincro").hide();
+            InizializzaArray();
+            alert("Nessuna connessione, sincronizzazione non possibile!");
         }
     }
 
@@ -718,12 +719,11 @@ function onDeviceReady() {
         $(".sincrotable").removeClass("updated_class");
         $(".sincrotable").addClass("updating_class");
         console.log(msg);
-        global_ultimo_aggiornamento=getDateTime();
         db.transaction(
             function (tx) { tx.executeSql("INSERT OR REPLACE INTO LOCAL_ULTIMOAGGIORNAMENTO (id,ultimo_aggiornamento) VALUES (?,?)", [1,global_ultimo_aggiornamento]); },
             function () { alert("ultimo aggiornamento non inserito"); },
             function () { //alert("ispezione "+isp.id + " inserita");
-                $("#ultimo_aggiornamento_content").html('Ultimo aggiornamento:<br/>'+global_ultimo_aggiornamento);
+                InizializzaArray();
             }
         );
 
@@ -1271,21 +1271,23 @@ function onDeviceReady() {
                         //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                     }
                 }, function() {
-                }
-            );
-        });
-        db.transaction(function (tx) {
-            descrizioniservizio.length=0;
-            tipiservizio.length=0;
-            tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
-                    var len = results.rows.length, i;
-                    for (i = 0; i < len; i++){
-                        var id_servizio=results.rows.item(i).id;
-                        descrizioniservizio[id_servizio]=results.rows.item(i).descrizione_servizio;
-                        tipiservizio[id_servizio]=results.rows.item(i).servizio;
-                        //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
-                    }
-                }, function() {
+                    db.transaction(function (tx) {
+                        descrizioniservizio.length=0;
+                        tipiservizio.length=0;
+                        tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
+                                var len = results.rows.length, i;
+                                for (i = 0; i < len; i++){
+                                    var id_servizio=results.rows.item(i).id;
+                                    descrizioniservizio[id_servizio]=results.rows.item(i).descrizione_servizio;
+                                    tipiservizio[id_servizio]=results.rows.item(i).servizio;
+                                    //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
+                                }
+                            }, function() {
+                                global_ultimo_aggiornamento=getDateTime();
+                                $("#ultimo_aggiornamento_content").html('Ultimo aggiornamento:<br/>'+global_ultimo_aggiornamento);
+                            }
+                        );
+                    });
                 }
             );
         });
