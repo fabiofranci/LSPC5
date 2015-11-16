@@ -660,6 +660,7 @@ function onDeviceReady() {
 
     function getIspezioniListFromServer() {
         console.log("Dentro getIspezioniListFromServer");
+        alert("Dentro getIspezioniListFromServer");
          rigaselect='';
 
          $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
