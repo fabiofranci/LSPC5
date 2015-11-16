@@ -505,7 +505,7 @@ function onDeviceReady() {
                                 $("#TipiServizio").addClass('updated_class');
                                 alert("chiamerei getPostazioniListFromServer 1");
                                 //ora chiama quella successiva
-                                getPostazioniListFromServer();
+                                //getPostazioniListFromServer();
                             }
                         );
                     } else {
@@ -513,12 +513,12 @@ function onDeviceReady() {
                         $("#TipiServizio").addClass('updated_class');
                         //ora chiama quella successiva
                         alert("chiamerei getPostazioniListFromServer 2");
-                        getPostazioniListFromServer();
+                        //getPostazioniListFromServer();
                     }
                 }
             );
     }
-
+/*
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
          rigaselect='';
@@ -702,7 +702,7 @@ function onDeviceReady() {
         }
 
     }
-
+*/
     function setUltimoAggiornamento(msg) {
         console.log(msg);
         global_ultimo_aggiornamento=getDateTime();
