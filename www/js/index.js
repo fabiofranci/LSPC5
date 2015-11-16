@@ -1554,7 +1554,7 @@ function onDeviceReady() {
                         //alert ("ultimoaggiornamento in db: "+global_ultimo_aggiornamento);
                     }
                 }, function() {
-                    alert("Creo db");
+                    console.log("Creo db");
                     db.transaction(creoDb, onDbError, onDbOpenSuccess);
                     sincronizzaDaServer();
                     //InizializzaArray();
