@@ -516,10 +516,8 @@ function onDeviceReady() {
                 getPostazioniListFromServer();
             }
         }
-
-
-
     }
+
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
 
@@ -566,7 +564,6 @@ function onDeviceReady() {
         );
     }
     function getVisiteListFromServer() {
-        return 1;
         console.log("Dentro getVisiteListFromServer");
         $.getJSON(serviceURL + 'gettablevisite.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getVisiteListFromServer post success");
@@ -657,7 +654,6 @@ function onDeviceReady() {
         //setUltimoAggiornamento('getIspezioniListFromServer');
     }
     function getUsersListFromServer() {
-        return 1;
         console.log("Dentro getUsersListFromServer");
 
         $.getJSON(serviceURL + 'gettableusers.php?ult='+global_ultimo_aggiornamento, function (data) {
@@ -702,7 +698,7 @@ function onDeviceReady() {
         }
 
     }
-*/
+
     function setUltimoAggiornamento(msg) {
         console.log(msg);
         global_ultimo_aggiornamento=getDateTime();
