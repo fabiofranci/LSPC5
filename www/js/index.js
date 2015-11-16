@@ -339,7 +339,7 @@ function onDeviceReady() {
             );
         });
     }
-
+//per ora lo saltiamo!
     function getUsersListFromServer() {
         console.log("Dentro getUsersListFromServer");
         rigaselect='';
