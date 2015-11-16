@@ -666,7 +666,6 @@ function onDeviceReady() {
 
         $.getJSON(serviceURL + 'gettableispezioni.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getIspezioniListFromServer post success");
-                alert("Dentro success");
                 ispezioni_server = data.items;
                 var i=0;
                 $.each(ispezioni_server, function (index, isp) {
@@ -694,7 +693,6 @@ function onDeviceReady() {
                             $("#Ispezioni").addClass('updated_class');
 
                             //ora chiama quella successiva
-                            alert("Ho finito 1");
                             setUltimoAggiornamento('getIspezioniListFromServer');
                             //alert("chiamerei getIspezioniListFromServer 1");
                         }
@@ -704,7 +702,6 @@ function onDeviceReady() {
                     $("#Ispezioni").addClass('updated_class');
 
                     //ora chiama quella successiva
-                    alert("Ho finito 2");
                     setUltimoAggiornamento('getIspezioniListFromServer');
                     //alert("chiamerei getIspezioniListFromServer 2");
                 }
@@ -1280,7 +1277,7 @@ function onDeviceReady() {
                                     var id_servizio=results.rows.item(i).id;
                                     descrizioniservizio[id_servizio]=results.rows.item(i).descrizione_servizio;
                                     tipiservizio[id_servizio]=results.rows.item(i).servizio;
-                                    //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
+                                    alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
                                 }
                             }, function() {
                                 global_ultimo_aggiornamento=getDateTime();
