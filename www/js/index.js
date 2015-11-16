@@ -450,15 +450,15 @@ function onDeviceReady() {
                     $("#SediClienti").removeClass('updating_class');
                     $("#SediClienti").addClass('updated_class');
                     //ora chiama quella successiva
-                    //alert("chiamerei tiposervizio 2");
-                    getTipiServizioListFromServer();
+                    alert("chiamerei tiposervizio 2");
+                    //getTipiServizioListFromServer();
                 }
             }
         );
 
         //setUltimoAggiornamento('getSediClientiListFromServer');
     }
-
+/*
         function getTipiServizioListFromServer() {
         console.log("Dentro getTipiServizioListFromServer");
 
@@ -519,7 +519,7 @@ function onDeviceReady() {
         }
     }
 
-    /*
+
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
 
