@@ -1114,10 +1114,12 @@ function onDeviceReady() {
     //});
 
     $("#buttonVisite").on('click',function(){
+        var datiRiga='';
         for (var key in visite_server) {
             visita=visite_server[key];
-            alert(visita.codice_visita);
-            alert(visita.id_sede);
+            //alert(visita.codice_visita);
+            //alert(visita.id_sede);
+            datiRiga+="<a href='#singola_visita?id="+visita.codice_visita+"'><button data-theme='f'> Visita del "+visita.data_inizio_visita+"</button></a>";
         }
 
         location.href="#visite";
