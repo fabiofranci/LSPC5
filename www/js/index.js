@@ -677,7 +677,7 @@ function onDeviceReady() {
                                         for (i = 0; i < len; i++){
                                             codice_visita=results.rows.item(i).codice_visita;
                                             visite_server[codice_visita]=results.rows.item(i);
-                                            alert("visita:"+codice_visita);
+                                            console.log("visita:"+codice_visita);
                                         }
                                     }, function() {
                                     }
@@ -697,7 +697,7 @@ function onDeviceReady() {
                                 for (i = 0; i < len; i++){
                                     codice_visita=results.rows.item(i).codice_visita;
                                     visite_server[codice_visita]=results.rows.item(i);
-                                    alert("Visita:"+codice_visita);
+                                    console.log("Visita:"+codice_visita);
                                     //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                 }
                             }, function() {
