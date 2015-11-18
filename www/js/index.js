@@ -113,6 +113,7 @@ function onDeviceReady() {
     var descrizioniservizio=new Array(); //lo popoliamo getTipiServizioListFromServer()
     var tipiservizio=new Array(); //lo popoliamo getTipiServizioListFromServer()
     var users=new Array(); //lo popoliamo dopo getUsersListFromServer()
+    var visite_in_corso=new Array(); //lo popoliamo dopo getVisiteFromServer()
 
 
 // onSuccess Callback
@@ -669,6 +670,19 @@ function onDeviceReady() {
 
                             $("#Visite").removeClass('updating_class');
                             $("#Visite").addClass('updated_class');
+                            visite_server.length=0;
+                            db.transaction(function (tx) {
+                                tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
+                                        var len = results.rows.length, i;
+                                        for (i = 0; i < len; i++){
+                                            codice_visita=results.rows.item(i).codice_visita;
+                                            visite_server[codice_visita]=results.rows.item(i);
+                                            alert("visita:"+codice_visita);
+                                        }
+                                    }, function() {
+                                    }
+                                );
+                            });
 
                             //ora chiama quella successiva
                             getIspezioniListFromServer();
@@ -676,6 +690,21 @@ function onDeviceReady() {
                         }
                     );
                 } else {
+                    visite_server.length=0;
+                    db.transaction(function (tx) {
+                        tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
+                                var len = results.rows.length, i;
+                                for (i = 0; i < len; i++){
+                                    codice_visita=results.rows.item(i).codice_visita;
+                                    visite_server[codice_visita]=results.rows.item(i);
+                                    alert("Visita:"+codice_visita);
+                                    //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                                }
+                            }, function() {
+                            }
+                        );
+                    });
+
                     $("#Visite").removeClass('updating_class');
                     $("#Visite").addClass('updated_class');
 
@@ -960,6 +989,20 @@ function onDeviceReady() {
             function () {
                 //alert("visita inserita localmente, ora devo mettere le ispezioni");
                 var AggiornamentiVisite=true;
+                visite_server.length=0;
+                db.transaction(function (tx) {
+                    tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
+                            var len = results.rows.length, i;
+                            for (i = 0; i < len; i++){
+                                codice_visita=results.rows.item(i).codice_visita;
+                                visite_server[codice_visita]=results.rows.item(i);
+                                //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                            }
+                        }, function() {
+                        }
+                    );
+                });
+
                 //faccio un ciclo su tutte le postazioni della sede, creo il codice_ispezione e inserisco l'ispezione in locale
 
                 db.transaction(function (tx2) {
