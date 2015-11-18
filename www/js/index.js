@@ -1114,6 +1114,12 @@ function onDeviceReady() {
     //});
 
     $("#buttonVisite").on('click',function(){
+        for (var key in visite_server) {
+            visita=visite_server[key];
+            alert(visita.codice_visita);
+            alert(visita.id_sede);
+        }
+
         location.href="#visite";
     });
     $("#SCAN").on('click',function(){
