@@ -1113,6 +1113,9 @@ function onDeviceReady() {
     //    location.href="#ispezioneA2";
     //});
 
+    $("#buttonVisite").on('click',function(){
+        location.href="#visite";
+    });
     $("#SCAN").on('click',function(){
         scanCode();
     });
