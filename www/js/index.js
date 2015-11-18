@@ -1121,7 +1121,9 @@ function onDeviceReady() {
             //alert(visita.id_sede);
             datiRiga+="<a href='#singola_visita?id="+visita.codice_visita+"'><button data-theme='f'> Visita del "+visita.data_inizio_visita+"</button></a>";
         }
-        alert(datiRiga);
+        $("#visite_list").html('');
+        $("#visite_list").append(datiRiga);
+        $("#visite").trigger("create");
         location.href="#visite";
     });
     $("#SCAN").on('click',function(){
