@@ -1378,6 +1378,8 @@ function onDeviceReady() {
     });
 
     $(document).on("pagebeforeshow","#postazione_mancante",function(){ // When entering pagetwo
+        alert("prima di postazione mancante");
+        console.log("Prima di postazione mancante");
         if ($.mobile.pageData && $.mobile.pageData.id){
             var codicepostazione=$.mobile.pageData.id;
             PostazioneCorrente.codice_postazione=codicepostazione;
@@ -1433,6 +1435,31 @@ function onDeviceReady() {
                                     $("#singola_visita_conto_postazioni_totali").html("Tutte le postazioni : "+VisitaCorrente.totali);
                                     $("#singola_visita_conto_postazioni_davedere").html(daVedere);
                                     $("#singola_visita").trigger("create");
+                                    db.transaction(function (tx) {
+                                        //alert("Visita corrente:"+VisitaCorrente.codice_visita);
+                                        tx.executeSql('SELECT * FROM LOCAL_ISPEZIONI JOIN LOCAL_POSTAZIONI ON LOCAL_POSTAZIONI.codice_postazione=LOCAL_ISPEZIONI.codice_postazione WHERE (codice_visita=? AND stato_postazione="Ancora da Visionare")', [VisitaCorrente.codice_visita], function (tx, dati) {
+                                                var len = dati.rows.length, i;
+                                                var datiRiga='';
+                                                if (len>0) {
+                                                    for (i = 0; i < len; i++){
+                                                        //datiRiga+="<a href='#singola_visita?id="+dati.rows.item(i).codice_visita+"'><button data-theme='f'> Visita del "+dati.rows.item(i).data_inizio_visita+"</button></a>";
+                                                        //datiRiga+='<li><a class="singola_visita_link" href="#singola_visita?id='+dati.rows.item(i).id_locale+'">'+dati.rows.item(i).data_inizio_visita+'</a></li>';
+                                                        //alert("Ancora da visionare: "+dati.rows.item(i).nome);
+                                                        datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><button data-theme='f'> "+dati.rows.item(i).nome+"</button></a>";
+                                                    }
+                                                    $("#listapostazionimancanti").append(datiRiga);
+                                                    //$("#postazione_mancante").trigger("create");
+                                                } else {
+                                                    alert("OK! Tutte le postazioni sono state visitate! Compila il modulo del certificato!");
+                                                    //devo fare l'update su visite e poi chiamare genera certificati
+                                                    location.href="#fine_visita";
+                                                }
+
+                                            }, function() {
+                                                alert("Errore!");
+                                            }
+                                        );
+                                    });
 
                                 }, function() {
                                     alert("Nessuna ispezione in questa visita!");
