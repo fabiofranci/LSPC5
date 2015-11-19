@@ -1248,10 +1248,9 @@ function onDeviceReady() {
                             //datiRiga+="<a href='#singola_visita?id="+dati.rows.item(i).codice_visita+"'><button data-theme='f'> Visita del "+dati.rows.item(i).data_inizio_visita+"</button></a>";
                             //datiRiga+='<li><a class="singola_visita_link" href="#singola_visita?id='+dati.rows.item(i).id_locale+'">'+dati.rows.item(i).data_inizio_visita+'</a></li>';
                             //alert("Ancora da visionare: "+dati.rows.item(i).nome);
-                            datiRiga+="<li><a href='#postazionemancante?id='"+dati.rows.item(i).codice_ispezione+"'> "+dati.rows.item(i).nome+"</a></li>";
+                            datiRiga+="<a href='#postazionemancante?id="+dati.rows.item(i).codice_ispezione+"'><button data-theme='f'> "+dati.rows.item(i).nome+"</button></a>";
                         }
                         $("#listapostazionimancanti").html(datiRiga);
-                        $('#listapostazionimancanti').listview().listview('refresh');
                         //$('#listapostazionimancanti').page();
                         //$("#postazione_mancante").trigger("create");
                     } else {
