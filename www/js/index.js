@@ -69,6 +69,7 @@ function onDeviceReady() {
     // (i) GLOBALI
     //---------------------------------------------------------------------------------------
 
+    var chiedilogin=1;
     var firmacliente='';
     var global_ultimo_aggiornamento='';
 
@@ -179,7 +180,13 @@ function onDeviceReady() {
         }
     }
 
-    function sincronizzaDaServer() {
+    function sincronizzaDaServer(paramSincro) {
+        console.log(paramSincro);
+        if (paramSincro=='inzio1' or paramSincro=='inizio2') {
+            chiedilogin=1;
+        } else {
+            chiedilogin=0;
+        }
         $("#menuhome").hide();
         $("#finestrasincro").show();
         var Connessione=checkConnessione();
@@ -214,7 +221,7 @@ function onDeviceReady() {
         tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_VISITE (codice_visita PRIMARY KEY, id_sede, id_dipendente, data_inizio_visita, data_fine_visita, stato_visita,ultimo_aggiornamento,azioni_correttive,nr_certificato,c1a,c2a,c3a,c4a,c5a,c1b,c2b,c3b,c4b,c5b,c6b,c7b,c8b,c9b,c10b,c11b,c12b,c13b,c14b,c15b,c16b,c17b,c18b,c18btesto,c1c,c2c,c1d,c2d,c3d,c4d,c5d,c6d,c6dtesto,c1e,c2e,c3e,c4e,c6e,c7etesto,nome_cliente_firma,firma_cliente)");
         tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_ISPEZIONI (codice_ispezione PRIMARY KEY, codice_postazione, codice_visita, ultimo_aggiornamento, data_ispezione, stato_postazione, stato_esca_roditori, collocato_adescante_roditori, stato_piastra_collante_insetti_striscianti, ooteche_orientalis, adulti_orientalis, ooteche_germanica, adulti_germanica, ooteche_supella_longipalpa, adulti_supella_longipalpa, ooteche_periplaneta_americana, adulti_periplaneta_americana, stato_piastra_insetti_volanti, presenza_muscidi, presenza_imenotteri_vespidi, presenza_imenotteri_calabronidi, presenza_dittere, presenza_altri_tipi_insetti, note_per_cliente, nutrie_tana, nutrie_target, presenza_target_lepidotteri, tipo_target_lepidotteri, latitudine, longitudine )");
         tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_ULTIMOAGGIORNAMENTO (id INTEGER PRIMARY KEY, ultimo_aggiornamento)");
-        sincronizzaDaServer();
+        sincronizzaDaServer('crea');
         return 1;
     }
 
@@ -251,7 +258,7 @@ function onDeviceReady() {
     function inviaPostazioneToServer(nuovapostazione) {
         $.post( serviceURL + 'settablepostazioni.php', { id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento })
             .done(function( data ) {
-                sincronizzaDaServer();
+                sincronizzaDaServer('nuovapostazione');
             });
     }
 
@@ -768,18 +775,22 @@ function onDeviceReady() {
 
 
     function setUltimoAggiornamento(msg) {
-        $("#menuhome").show();
-        $("#finestrasincro").hide();
-        $(".sincrotable").removeClass("updated_class");
-        $(".sincrotable").addClass("updating_class");
         console.log(msg);
         db.transaction(
             function (tx) { tx.executeSql("INSERT OR REPLACE INTO LOCAL_ULTIMOAGGIORNAMENTO (id,ultimo_aggiornamento) VALUES (?,?)", [1,global_ultimo_aggiornamento]); },
-            function () { alert("ultimo aggiornamento non inserito"); },
+            function () {
+                if (chiedilogin) {
+                location.href=("#Login");
+                } else {
+                    $("#menuhome").show();
+                    $("#finestrasincro").hide();
+                    $(".sincrotable").removeClass("updated_class");
+                    $(".sincrotable").addClass("updating_class");
+                }
+            },
             function () { //alert("ispezione "+isp.id + " inserita");
             }
         );
-
     }
 
     // (i) Cerca Postazione
@@ -1094,11 +1105,11 @@ function onDeviceReady() {
     });
 
     $("#sincronizza").on( "click", function(){
-        sincronizzaDaServer();
+        sincronizzaDaServer('tastosincro');
     });
     $("#sincronizza_zero").on( "click", function(){
         global_ultimo_aggiornamento="0000-00-00";
-        sincronizzaDaServer();
+        sincronizzaDaServer('tastosincrozero');
     });
 
     $("#elencoclienti").on( "click", function(){
@@ -1628,13 +1639,13 @@ function onDeviceReady() {
                     var len = results.rows.length, i;
                     for (i = 0; i < len; i++){
                         global_ultimo_aggiornamento=results.rows.item(i).ultimo_aggiornamento;
-                        sincronizzaDaServer();
+                        sincronizzaDaServer('inizio1');
                         //alert ("ultimoaggiornamento in db: "+global_ultimo_aggiornamento);
                     }
                 }, function() {
                     console.log("Creo db");
                     db.transaction(creoDb, onDbError, onDbOpenSuccess);
-                    sincronizzaDaServer();
+                    sincronizzaDaServer('inizio2');
                 }
             );
         });
