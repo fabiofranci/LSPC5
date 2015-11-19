@@ -1560,7 +1560,7 @@ function onDeviceReady() {
             try {
                 navigator.camera.getPicture(function(data){
                     firmacliente="data:image/jpeg;base64,"+data;
-                    alert("Dentro:"+firmacliente);
+                    //alert("Dentro:"+firmacliente);
                 },null,{
                     correctOrientation: true,
                     destinationType : Camera.DestinationType.DATA_URL,
@@ -1573,7 +1573,7 @@ function onDeviceReady() {
                 return 1;
             }
 
-            alert("fuori:"+firmacliente);
+            //alert("fuori:"+firmacliente);
 
             //alert(firmacliente);
             var stringacomando=comando.join(", ");
