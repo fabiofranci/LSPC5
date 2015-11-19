@@ -1671,6 +1671,7 @@ function onDeviceReady() {
     //---------------------------------------------------------------------------------------
 
     $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
+        alert("E ora?");
         if ($.mobile.pageData && $.mobile.pageData.id){
             var codicepostazione=$.mobile.pageData.id;
             PostazioneCorrente.codice_postazione=codicepostazione;
