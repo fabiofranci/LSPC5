@@ -1174,8 +1174,7 @@ function onDeviceReady() {
                             alert("Ancora da visionare: "+dati.rows.item(i).nome);
                             datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><button data-theme='f'> "+dati.rows.item(i).nome+"</button></a>";
                         }
-                        $("#postazionimancanti_list").html('<h4>Ancora da visionare</h4>');
-                        $("#postazionimancanti_list").append(datiRiga);
+                        $("#listapostazionimancanti").append(datiRiga);
                         //$("#postazione_mancante").trigger("create");
                     } else {
                         alert("OK! Tutte le postazioni sono state visitate! Compila il modulo del certificato!");
