@@ -1657,6 +1657,7 @@ function onDeviceReady() {
     $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
         if ($.mobile.pageData && $.mobile.pageData.id){
             var PostazioneMancante=$.mobile.pageData.id;
+            alert(PostazioneMancante);
         }
     });
 
