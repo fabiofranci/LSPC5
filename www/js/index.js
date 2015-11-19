@@ -108,7 +108,6 @@ function onDeviceReady() {
     var scanText='';
     var postazioneCorrente={};
     var VisitaCorrente={};
-    var PostazioneMancante='';
 
     var sedi=new Array(); //lo popoliamo dopo getSediClientiListFromServer()
     var descrizioniservizio=new Array(); //lo popoliamo getTipiServizioListFromServer()
@@ -1391,6 +1390,7 @@ function onDeviceReady() {
                         VisitaCorrente.data_inizio_visita=dati.rows.item(0).data_inizio_visita;
                         $("#singola_visita_cliente").html(sedi[VisitaCorrente.id_sede]);
                         $("#singola_visita_data_inizio").html(VisitaCorrente.data_inizio_visita);
+                        $("#listapostazionimancanti").html('');
                         db.transaction(function (tx) {
                             tx.executeSql('SELECT * FROM LOCAL_ISPEZIONI WHERE codice_visita=?', [codicevisita], function (tx, dati) {
                                     var len = dati.rows.length, i;
@@ -1671,10 +1671,9 @@ function onDeviceReady() {
         for (i=0; i<len; i++) {
             dataObj[dataArray[i].name] = dataArray[i].value;
         }
-        alert("dentro form:"+dataObj['PM_codice_ispezione']);
         //controllo campi obbligatori
         if (dataObj['PM_stato_postazione']) {
-            alert("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+dataObj['PM_codice_ispezione']+"'");
+            //alert("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+dataObj['PM_codice_ispezione']+"'");
             console.log("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+dataObj['PM_codice_ispezione']+"'");
             db.transaction(
                 function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [dataObj['PM_codice_ispezione']]); },
@@ -1738,8 +1737,7 @@ function onDeviceReady() {
             //alert(stringacomando);
             db.transaction(
                 function (tx3) { tx3.executeSql("UPDATE LOCAL_VISITE SET "+stringacomando+",firma_cliente='"+firmacliente+"',data_inizio_visita=data_inizio_visita,stato_visita='conclusa',data_fine_visita='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_visita=?", [VisitaCorrente.codice_visita]); },
-                function () { alert("errore");
-                },
+                onDbError,
                 function () {
                     visite_in_corso.length=0;
                     db.transaction(function (tx) {
@@ -1748,6 +1746,7 @@ function onDeviceReady() {
                                 for (i = 0; i < len; i++){
                                     codice_visita=results.rows.item(i).codice_visita;
                                     visite_in_corso[codice_visita]=results.rows.item(i);
+                                    recuperavisite(IDDIPENDENTE);
                                     AggiornaSuServer();
                                     location.href="#home";
                                     //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
