@@ -180,6 +180,7 @@ function onDeviceReady() {
     }
 
     function sincronizzaDaServer() {
+        $("#listavisiteincorso").html('');
         $("#menuhome").hide();
         $("#finestralogin").hide();
         $("#finestrasincro").show();
