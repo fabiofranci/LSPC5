@@ -1432,7 +1432,7 @@ function onDeviceReady() {
                                                         datiRiga+="<li><button class='postazionemancantelink' codiceispezione='postazionemancante_"+dati.rows.item(i).codice_ispezione+"'> "+dati.rows.item(i).nome+"</button></li>";
                                                     }
                                                     $("#listapostazionimancanti").html(datiRiga);
-                                                    $('#listapostazionimancanti').listview().listview('refresh');
+                                                    //$('#listapostazionimancanti').listview().listview('refresh');
                                                     //$("#postazione_mancante").trigger("create");
                                                 } else {
                                                     alert("OK! Tutte le postazioni sono state visitate! Compila il modulo del certificato!");
