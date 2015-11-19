@@ -187,6 +187,8 @@ function onDeviceReady() {
         AggiornaSuServer();
 
 
+        Connessione=false;
+
         if (Connessione) {
             //alert(global_ultimo_aggiornamento);
             //AggiornaSuServer();
