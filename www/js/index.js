@@ -324,7 +324,10 @@ function onDeviceReady() {
                                             //quando arriva qui ha finito!!!
                                             $("#IspezioniSuServer").removeClass('updating_class');
                                             $("#IspezioniSuServer").addClass('updated_class');
-                                            getClientiListFromServer();
+                                            alert("Chiamo users");
+                                            getUsersListFromServer();
+
+                                            //getClientiListFromServer();
                                         }, function() {
                                             //ERROR!
                                         }
@@ -678,6 +681,7 @@ function onDeviceReady() {
                                             codice_visita=results.rows.item(i).codice_visita;
                                             visite_server[codice_visita]=results.rows.item(i);
                                             console.log("visita:"+codice_visita);
+                                            $("#totvisiteincorso").html(visite_server.length);
                                         }
                                     }, function() {
                                     }
@@ -698,6 +702,7 @@ function onDeviceReady() {
                                     codice_visita=results.rows.item(i).codice_visita;
                                     visite_server[codice_visita]=results.rows.item(i);
                                     console.log("Visita:"+codice_visita);
+                                    $("#totvisiteincorso").html(visite_server.length);
                                     //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                 }
                             }, function() {
