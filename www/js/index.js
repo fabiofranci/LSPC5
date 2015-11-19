@@ -982,26 +982,29 @@ function onDeviceReady() {
             onDbError,
             function () {
                 var AggiornamentiPostazioni=true;
+                //ora bisogna aggiungere l'ispezione per la visita corrente, se c'è
+                if (VisitaCorrente.codice_visita) {
+                    result=confirm("Aggiungi questa postazione alla visita corrente?");
+                    if (result==1) {
+                        var codice_ispezione=VisitaCorrente.codice_visita+"|"+nuovapostazione.codice_postazione;
+                        var codice_postazione=nuovapostazione.codice_postazione;
+                        var codice_visita=VisitaCorrente.codice_visita;
+                        var ultimo_aggiornamento=getDateTime();
+                        alert(codice_ispezione);
+                        alert(codice_postazione);
+                        alert(codice_visita);
+                        alert(ultimo_aggiornamento);
+                        db.transaction(
+                            function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare']); },
+                            function () { //alert("errore");
+                            },
+                            function () { //alert("ispezione "+codice_ispezione+" inserita");
+                            }
+                        );
+                    }
+                }
             }
         );
-        //ora bisogna aggiungere l'ispezione per la visita corrente, se c'è
-        if (VisitaCorrente.codice_visita) {
-            result=confirm("Aggiungi questa postazione alla visita corrente?");
-            if (result==1) {
-                var codice_ispezione=VisitaCorrente.codice_visita+"|"+nuovapostazione.codice_postazione;
-                var codice_postazione=nuovapostazione.codice_postazione;
-                var codice_visita=VisitaCorrente.codice_visita;
-                var ultimo_aggiornamento=getDateTime();
-
-                db.transaction(
-                    function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare']); },
-                    function () { //alert("errore");
-                    },
-                    function () { //alert("ispezione "+codice_ispezione+" inserita");
-                    }
-                );
-            }
-        }
     }
 
     function creaVisita(id_sede) {
