@@ -1495,7 +1495,8 @@ function onDeviceReady() {
             $("#finestralogin").hide();
             $("#menuhome").show();
         } else {
-            alert("Questo PIN non corrisponde a nessun utente! Riprova")
+            alert("Questo PIN non corrisponde a nessun utente! Riprova");
+            $("#pin").val('');
         }
     });
 
