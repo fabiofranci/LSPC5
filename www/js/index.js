@@ -378,8 +378,8 @@ function onDeviceReady() {
                                 tx.executeSql('SELECT * FROM SERVER_USERS', [], function (tx, results) {
                                         var len = results.rows.length, i;
                                         for (i = 0; i < len; i++){
-                                            id_user=results.rows.item(i).id_user;
-                                            users[id_user]=results.rows.item(i);
+                                            id=results.rows.item(i).id;
+                                            users[id]=results.rows.item(i);
                                             //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                         }
                                     }, function() {
@@ -398,8 +398,8 @@ function onDeviceReady() {
                         tx.executeSql('SELECT * FROM SERVER_USERS', [], function (tx, results) {
                                 var len = results.rows.length, i;
                                 for (i = 0; i < len; i++){
-                                    id_user=results.rows.item(i).id_user;
-                                    users[id_user]=results.rows.item(i);
+                                    id=results.rows.item(i).id;
+                                    users[id]=results.rows.item(i);
                                     //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                 }
                             }, function() {
@@ -1385,11 +1385,11 @@ function onDeviceReady() {
         alert(pin);
         for (var key in users) {
             user=users[key];
-            alert(user.id_user);
+            alert(user.id);
             if (user.PIN==pin) {
-                alert("LOGIN OK! Riconosciuto id_user="+user.id_user);
+                alert("LOGIN OK! Riconosciuto id_user="+user.id);
                 alert("Benvenuto "+user.Nome+" "+user.Cognome);
-                IDDIPENDENTE=user.id_user;
+                IDDIPENDENTE=user.id;
                 trovato=true;
             }
         }
