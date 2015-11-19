@@ -1430,7 +1430,7 @@ function onDeviceReady() {
                                     VisitaCorrente.totali=totali;
                                     var daVedere=VisitaCorrente.totali-VisitaCorrente.viste;
                                     $("#singola_visita_conto_postazioni_totali").html("Tutte le postazioni : "+VisitaCorrente.totali);
-                                    $("#singola_visita_conto_postazioni_davedere").html("Postazioni da vedere: "+daVedere);
+                                    $("#singola_visita_conto_postazioni_davedere").html(daVedere);
                                     $("#singola_visita").trigger("create");
 
                                 }, function() {
