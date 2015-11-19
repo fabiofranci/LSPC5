@@ -1328,39 +1328,37 @@ function onDeviceReady() {
                         VisitaCorrente.data_inizio_visita=dati.rows.item(0).data_inizio_visita;
                         $("#singola_visita_cliente").html(sedi[VisitaCorrente.id_sede]);
                         $("#singola_visita_data_inizio").html(VisitaCorrente.data_inizio_visita);
+                        db.transaction(function (tx) {
+                            tx.executeSql('SELECT * FROM LOCAL_ISPEZIONI WHERE codice_visita=?', [codicevisita], function (tx, dati) {
+                                    var len = dati.rows.length, i;
+                                    var viste=0;
+                                    var totali=0;
+                                    for (i = 0; i < len; i++){
+                                        if (dati.rows.item(i).stato_postazione=='Ancora da Visionare') {
+
+                                        } else {
+                                            viste=viste+1;
+                                        }
+                                        totali=totali+1;
+                                    }
+                                    VisitaCorrente.viste=viste;
+                                    VisitaCorrente.totali=totali;
+                                    var daVedere=VisitaCorrente.totali-VisitaCorrente.viste;
+                                    $("#singola_visita_conto_postazioni_totali").html("Tutte le postazioni : "+VisitaCorrente.totali);
+                                    $("#singola_visita_conto_postazioni_davedere").html("Postazioni da vedere: "+daVedere);
+                                    $("#singola_visita").trigger("create");
+
+                                }, function() {
+                                    alert("Nessuna ispezione in questa visita!");
+                                }
+                            );
+                        });
 
                     }, function() {
                         //alert("getVisitaCorrente: Errore DB!");
                     }
                 );
             });
-
-            db.transaction(function (tx) {
-                tx.executeSql('SELECT * FROM LOCAL_ISPEZIONI WHERE codice_visita=?', [codicevisita], function (tx, dati) {
-                        var len = dati.rows.length, i;
-                        var viste=0;
-                        var totali=0;
-                        for (i = 0; i < len; i++){
-                            if (dati.rows.item(i).stato_postazione=='Ancora da Visionare') {
-
-                            } else {
-                                viste=viste+1;
-                            }
-                            totali=totali+1;
-                        }
-                        VisitaCorrente.viste=viste;
-                        VisitaCorrente.totali=totali;
-                        var daVedere=VisitaCorrente.totali-VisitaCorrente.viste;
-                        $("#singola_visita_conto_postazioni_totali").html("Tutte le postazioni : "+VisitaCorrente.totali);
-                        $("#singola_visita_conto_postazioni_davedere").html("Postazioni da vedere: "+daVedere);
-
-                    }, function() {
-                        alert("Nessuna ispezione in questa visita!");
-                    }
-                );
-            });
-
-            $("#singola_visita").trigger("create");
 
         } else {
             //alert("Visita non definita!");
