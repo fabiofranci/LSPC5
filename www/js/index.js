@@ -1519,7 +1519,11 @@ function onDeviceReady() {
 
 
     $('#listapostazionimancanti').on('click', 'li', function() {
-        alert($(this));
+        var object=$(this);
+        for (var property in object) {
+            output += property + ': ' + object[property]+'; ';
+        }
+        alert(output);
         var codiceispezione=$(this).attr('codiceispezione');
         alert("Works:"+codiceispezione); // id of clicked li by directly accessing DOMElement property
     });
