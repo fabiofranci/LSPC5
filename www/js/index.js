@@ -1250,9 +1250,8 @@ function onDeviceReady() {
                             //alert("Ancora da visionare: "+dati.rows.item(i).nome);
                             datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><li> "+dati.rows.item(i).nome+"</li></a>";
                         }
-                        $("#listapostazionimancanti").html('');
-                        $("#listapostazionimancanti").append(datiRiga);
-                        $('#listapostazionimancanti').listview('refresh');
+                        $("#listapostazionimancanti").html(datiRiga);
+                        $('#listapostazionimancanti').listview().listview('refresh');
                         //$('#listapostazionimancanti').page();
                         //$("#postazione_mancante").trigger("create");
                     } else {
@@ -1432,9 +1431,8 @@ function onDeviceReady() {
                                                         //alert("Ancora da visionare: "+dati.rows.item(i).nome);
                                                         datiRiga+="<li><a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'> "+dati.rows.item(i).nome+"</a></li>";
                                                     }
-                                                    $("#listapostazionimancanti").html('');
-                                                    $("#listapostazionimancanti").append(datiRiga);
-                                                    $("#listapostazionimancanti").listview('refresh');
+                                                    $("#listapostazionimancanti").html(datiRiga);
+                                                    $('#listapostazionimancanti').listview().listview('refresh');
                                                     //$("#postazione_mancante").trigger("create");
                                                 } else {
                                                     alert("OK! Tutte le postazioni sono state visitate! Compila il modulo del certificato!");
