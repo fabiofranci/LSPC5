@@ -1660,6 +1660,15 @@ function onDeviceReady() {
             $("#pm-codice_ispezione").val(PostazioneMancante);
         }
     });
+    $(document).on("pagebeforeshow","#home",function(){ // When entering pagetwo
+        if ($.mobile.pageData && $.mobile.pageData.sincronizza){
+            var sincronizzazione=$.mobile.pageData.sincronizza;
+            alert(sincronizzazione);
+            if (sincronizzazione==1) {
+                sincronizzaDaServer();
+            }
+        }
+    });
 
     $("#PM-SALVA").on('click',function(e){
         e.preventDefault();
@@ -1740,22 +1749,7 @@ function onDeviceReady() {
                 onDbError,
                 function () {
                     alert("Visita conclusa");
-                    visite_in_corso.length=0;
-                    db.transaction(function (tx) {
-                        tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
-                                var len = results.rows.length, i;
-                                for (i = 0; i < len; i++){
-                                    codice_visita=results.rows.item(i).codice_visita;
-                                    visite_in_corso[codice_visita]=results.rows.item(i);
-                                    recuperavisite(IDDIPENDENTE);
-                                    AggiornaSuServer();
-                                    location.href="#home";
-                                    //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
-                                }
-                            }, function() {
-                            }
-                        );
-                    });
+                    location.href="#home?sincronizza=1";
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
                 }
             );
