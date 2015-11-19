@@ -331,7 +331,8 @@ function onDeviceReady() {
                                             //quando arriva qui ha finito!!!
                                             $("#IspezioniSuServer").removeClass('updating_class');
                                             $("#IspezioniSuServer").addClass('updated_class');
-                                            getClientiListFromServer();
+                                            getUsersListFromServer();
+                                           // getClientiListFromServer();
                                         }, function() {
                                             //ERROR!
                                         }
