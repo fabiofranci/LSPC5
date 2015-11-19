@@ -1523,6 +1523,7 @@ function onDeviceReady() {
     //---------------------------------------------------------------------------------------
 
     $(".postazionemancantelink").on('click',function(e) {
+            console.log("Premuto postazione mancante");
             var codiceispezione=$(this).attr('codiceispezione');
             alert(codiceispezione);
         }
