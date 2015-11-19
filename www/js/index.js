@@ -1755,8 +1755,21 @@ function onDeviceReady() {
                 function () { alert("errore");
                 },
                 function () {
-                    AggiornaSuServer();
-                    location.href="#home";
+                    visite_in_corso.length=0;
+                    db.transaction(function (tx) {
+                        tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
+                                var len = results.rows.length, i;
+                                for (i = 0; i < len; i++){
+                                    codice_visita=results.rows.item(i).codice_visita;
+                                    visite_in_corso[codice_visita]=results.rows.item(i);
+                                    AggiornaSuServer();
+                                    location.href="#home";
+                                    //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                                }
+                            }, function() {
+                            }
+                        );
+                    });
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
                 }
             );
