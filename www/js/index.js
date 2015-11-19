@@ -1654,10 +1654,9 @@ function onDeviceReady() {
     //---------------------------------------------------------------------------------------
 
     $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
-        alert("E ora?");
         if ($.mobile.pageData && $.mobile.pageData.id){
-            alert("Siamo qui dentro");
             var codicepostazione=$.mobile.pageData.id;
+            alert(codicepostazione);
             PostazioneCorrente.codice_postazione=codicepostazione;
             //alert("codicevisita= "+codicevisita);
             db.transaction(function (tx) {
