@@ -1249,8 +1249,8 @@ function onDeviceReady() {
                             //datiRiga+='<li><a class="singola_visita_link" href="#singola_visita?id='+dati.rows.item(i).id_locale+'">'+dati.rows.item(i).data_inizio_visita+'</a></li>';
                             //alert("Ancora da visionare: "+dati.rows.item(i).nome);
                             id_sede=dati.rows.item(i).codice_ispezione.id_sede;
-                            datiRiga+="<li data-role='list-divider' data-theme='a'>"+sedi[id_sede]+"</li>";
-                            datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><button data-theme='f'> "+dati.rows.item(i).nome+"</button></a>";
+                            alert(id_sede);
+                            datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><li> "+dati.rows.item(i).nome+"</li></a>";
                         }
                         $("#listapostazionimancanti").html('');
                         $("#listapostazionimancanti").append(datiRiga);
@@ -1433,8 +1433,8 @@ function onDeviceReady() {
                                                         //datiRiga+='<li><a class="singola_visita_link" href="#singola_visita?id='+dati.rows.item(i).id_locale+'">'+dati.rows.item(i).data_inizio_visita+'</a></li>';
                                                         //alert("Ancora da visionare: "+dati.rows.item(i).nome);
                                                         id_sede=dati.rows.item(i).codice_ispezione.id_sede;
-                                                        datiRiga+="<li data-role='list-divider' data-theme='a'>"+sedi[id_sede]+"</li>";
-                                                        datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><button data-theme='f'> "+dati.rows.item(i).nome+"</button></a>";
+                                                        alert(id_sede);
+                                                        datiRiga+="<a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'><li> "+dati.rows.item(i).nome+"</li></a>";
                                                     }
                                                     $("#listapostazionimancanti").html('');
                                                     $("#listapostazionimancanti").append(datiRiga);
