@@ -1204,7 +1204,10 @@ function onDeviceReady() {
     });
 
     $("#pulisciDb").on( "click", function(){
-        db.transaction(pulisciDataBase, onDbError, onDbClearSuccess);
+        result=confirm("Continuando azzererai tutti i dati presenti nel dispositivo mobile. Sei sicuro di voler proseguire?");
+        if (result==1) {
+            db.transaction(pulisciDataBase, onDbError, onDbClearSuccess);
+        }
     });
 
     $("#sincronizza").on( "click", function(){
