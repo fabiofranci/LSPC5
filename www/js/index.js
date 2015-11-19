@@ -181,6 +181,7 @@ function onDeviceReady() {
 
     function sincronizzaDaServer() {
         $("#menuhome").hide();
+        $("#finestralogin").show();
         $("#finestrasincro").show();
         var Connessione=checkConnessione();
         if (Connessione) {
@@ -801,15 +802,17 @@ function onDeviceReady() {
 
 
     function setUltimoAggiornamento(msg) {
-        $("#menuhome").show();
-        $("#finestrasincro").hide();
-        $(".sincrotable").removeClass("updated_class");
-        $(".sincrotable").addClass("updating_class");
-        console.log(msg);
         db.transaction(
             function (tx) { tx.executeSql("INSERT OR REPLACE INTO LOCAL_ULTIMOAGGIORNAMENTO (id,ultimo_aggiornamento) VALUES (?,?)", [1,global_ultimo_aggiornamento]); },
             function () { alert("ultimo aggiornamento non inserito"); },
             function () { //alert("ispezione "+isp.id + " inserita");
+
+                $("#menuhome").hide();
+                $("#finestrasincro").hide();
+                $("#finestralogin").show();
+                $(".sincrotable").removeClass("updated_class");
+                $(".sincrotable").addClass("updating_class");
+                console.log(msg);
             }
         );
 
@@ -1378,9 +1381,24 @@ function onDeviceReady() {
     $("#SALVALOGIN").on('click',function(e){
         e.preventDefault();
         var pin=$("#pin").val();
+        var trovato=false;
         alert(pin);
-        IDDIPENDENTE=6;
-        location.href("#home");
+        for (var key in users) {
+            user=users[key];
+            if (user.PIN==pin) {
+                alert("LOGIN OK! Riconosciuto id_user="+user.id_user);
+                alert("Benvenuto "+user.Nome+" "+user.Cognome);
+                IDDIPENDENTE=user.id_user;
+                trovato=true;
+            }
+        }
+        if (trovato==true) {
+            $("#finestrasincro").hide();
+            $("#finestralogin").hide();
+            $("#menuhome").show();
+        } else {
+            alert("Riprova ad inserire un PIN diverso!")
+        }
     });
 
     //---------------------------------------------------------------------------------------

@@ -53,7 +53,12 @@
         <a data-iconpos="notext" href="#example" data-role="button" data-icon="flat-menu"></a>
     </div>
     <div data-role="content" role="main">
-        <div id="menuhome">
+        <div id="finestralogin" style="display:none;">
+            Inserisci
+            il tuo PIN: <input id="pin" name="pin" type="number" step="1"/>
+            <button id="SALVALOGIN" data-icon="flat-lock" data-theme="g">LOGIN</button>
+        </div>
+        <div id="menuhome"  style="display:none;">
             <button id="SCAN" data-icon="flat-menu" data-theme="g">SCAN</button>
             <br/>
             <button id="buttonVisite" data-icon="flat-menu" data-theme="b">VISITE IN CORSO (<span id="totvisiteincorso"></span>)</button>
@@ -87,21 +92,6 @@
     </div>
 </div>
 <!--// (f) pagina principale -->
-
-<!-- // (i) pagina login -->
-<div data-role="page" id="Login">
-    <div data-role="header">
-        <h1>LOGIN</h1>
-    </div>
-    <div data-role="content" role="main">
-        Inserisci
-        il tuo PIN: <input id="pin" name="pin" type="number" step="1"/>
-        <button id="SALVALOGIN" data-icon="flat-lock" data-theme="g">LOGIN</button>
-    </div>
-</div>
-
-<!--// (f) pagina login -->
-
 
 <!-- (i) nuova postazione -->
 <div data-role="page" id="nuova_postazione">
