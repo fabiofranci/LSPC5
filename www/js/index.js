@@ -1378,7 +1378,6 @@ function onDeviceReady() {
     });
 
     $(document).on("pagebeforeshow","#postazione_mancante",function(){ // When entering pagetwo
-        alert("prima di postazione mancante");
         console.log("Prima di postazione mancante");
         if ($.mobile.pageData && $.mobile.pageData.id){
             var codicepostazione=$.mobile.pageData.id;
@@ -1391,17 +1390,17 @@ function onDeviceReady() {
                         PostazioneCorrente.id_sede=dati.rows.item(0).id_sede;
                         PostazioneCorrente.id_servizio=dati.rows.item(0).id_servizio;
                         PostazioneCorrente.nome=dati.rows.item(0).nome;
+                        $("#postazione_mancante_cliente").html(sedi[postazioneCorrente.id_sede]);
+                        $("#postazione_mancante_tipo_servizio").html('('+tipiservizio[postazioneCorrente.id_servizio]+') '+descrizioniservizio[postazioneCorrente.id_servizio]);
+                        $("#postazione_mancante_nome").html('nome postazione: '+postazioneCorrente.nome);
+                        $("#postazione_mancante_CodicePostazione").html('codice postazione: '+postazioneCorrente.codice_postazione);
+                        $("#postazione_mancante").trigger("create");
                     }, function() {
                         //alert("getVisitaCorrente: Errore DB!");
                     }
                 );
             });
         }
-        $("#postazione_mancante_cliente").html(sedi[postazioneCorrente.id_sede]);
-        $("#postazione_mancante_tipo_servizio").html('('+tipiservizio[postazioneCorrente.id_servizio]+') '+descrizioniservizio[postazioneCorrente.id_servizio]);
-        $("#postazione_mancante_nome").html('nome postazione: '+postazioneCorrente.nome);
-        $("#postazione_mancante_CodicePostazione").html('codice postazione: '+postazioneCorrente.codice_postazione);
-        $("#postazione_mancante").trigger("create");
     });
 
     $(document).on("pagebeforeshow", "#singola_visita", function(e, data){
