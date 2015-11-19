@@ -709,7 +709,6 @@ function onDeviceReady() {
                                             codice_visita=results.rows.item(i).codice_visita;
                                             visite_in_corso[codice_visita]=results.rows.item(i);
                                             console.log("visita:"+codice_visita);
-                                            $("#totvisiteincorso").html(visite_in_corso.length);
                                         }
                                     }, function() {
                                     }
@@ -731,7 +730,6 @@ function onDeviceReady() {
                                     codice_visita=results.rows.item(i).codice_visita;
                                     visite_in_corso[codice_visita]=results.rows.item(i);
                                     console.log("Visita:"+codice_visita);
-                                    $("#totvisiteincorso").html(visite_in_corso.length);
                                     //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                 }
                             }, function() {
@@ -1149,19 +1147,6 @@ function onDeviceReady() {
     //    location.href="#ispezioneA2";
     //});
 
-    $("#buttonVisite").on('click',function(){
-        var datiRiga='';
-        for (var key in visite_in_corso) {
-            visita=visite_in_corso[key];
-            //alert(visita.codice_visita);
-            //alert(visita.id_sede);
-            datiRiga+="<a href='#singola_visita?id="+visita.codice_visita+"'><button data-theme='f'> Visita del "+visita.data_inizio_visita+"</button></a>";
-        }
-        $("#visite_list").html('');
-        $("#visite_list").append(datiRiga);
-        $("#visite").trigger("create");
-        location.href="#visite";
-    });
     $("#SCAN").on('click',function(){
         scanCode();
     });
@@ -1258,6 +1243,24 @@ function onDeviceReady() {
     function ProcessaScanTextVisita() {
         //controllo che il testo del qrcode corrisponda ad una trappola
         cercaPostazioneVisita();
+    }
+
+    function recuperavisite(id_dipendente) {
+        var datiRiga='';
+        var totvisitedipendente=0;
+        for (var key in visite_in_corso) {
+            visita=visite_in_corso[key];
+            //alert(visita.codice_visita);
+            //alert(visita.id_sede);
+            if (visita.id_dipendente==id_dipendente) {
+                datiRiga+="<a href='#singola_visita?id="+visita.codice_visita+"'><button data-theme='f'> Visita del "+visita.data_inizio_visita+"</button></a>";
+                totvisitedipendente++;
+            }
+        }
+        $("#totvisiteincorso").html(totvisitedipendente);
+        $("#listavisiteincorso").html('');
+        $("#listavisiteincorso").append(datiRiga);
+
     }
 
     $(document).on("pagebeforeshow","#postazione_trovata",function(){ // When entering pagetwo
@@ -1392,6 +1395,10 @@ function onDeviceReady() {
             }
         }
         if (trovato==true) {
+            //recupero le visite in corso per questo dipendente
+
+            recuperavisite(IDDIPENDENTE);
+
             $("#finestrasincro").hide();
             $("#finestralogin").hide();
             $("#menuhome").show();
