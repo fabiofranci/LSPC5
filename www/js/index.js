@@ -1252,7 +1252,7 @@ function onDeviceReady() {
                         }
                         $("#listapostazionimancanti").html('');
                         $("#listapostazionimancanti").append(datiRiga);
-                        $('#listapostazionimancanti').page();
+                        //$('#listapostazionimancanti').page();
                         //$("#postazione_mancante").trigger("create");
                     } else {
                         alert("OK! Tutte le postazioni sono state visitate! Compila il modulo del certificato!");
