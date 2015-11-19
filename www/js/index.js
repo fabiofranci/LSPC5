@@ -901,8 +901,7 @@ function onDeviceReady() {
                                 if (result==1) {
                                     db.transaction(
                                         function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare]); },
-                                        function () { alert("errore");
-                                        },
+                                        onDbError,
                                         function () { alert("ispezione "+codice_ispezione+" inserita");
                                         }
                                     );
