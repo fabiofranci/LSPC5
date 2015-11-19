@@ -1429,7 +1429,7 @@ function onDeviceReady() {
                                                         //datiRiga+="<a href='#singola_visita?id="+dati.rows.item(i).codice_visita+"'><button data-theme='f'> Visita del "+dati.rows.item(i).data_inizio_visita+"</button></a>";
                                                         //datiRiga+='<li><a class="singola_visita_link" href="#singola_visita?id='+dati.rows.item(i).id_locale+'">'+dati.rows.item(i).data_inizio_visita+'</a></li>';
                                                         //alert("Ancora da visionare: "+dati.rows.item(i).nome);
-                                                        datiRiga+="<li><a href='#postazione_mancante?id="+dati.rows.item(i).codice_ispezione+"'> "+dati.rows.item(i).nome+"</a></li>";
+                                                        datiRiga+="<li><a class='postazionemancantelink' codiceispezione='postazionemancante_"+dati.rows.item(i).codice_ispezione+"'> "+dati.rows.item(i).nome+"</a></li>";
                                                     }
                                                     $("#listapostazionimancanti").html(datiRiga);
                                                     $('#listapostazionimancanti').listview().listview('refresh');
@@ -1521,6 +1521,12 @@ function onDeviceReady() {
     //---------------------------------------------------------------------------------------
     // (i) Ispezioni
     //---------------------------------------------------------------------------------------
+
+    $(".postazionemancantelink").on('click',function(e) {
+            var codiceispezione=$(this).attr('codiceispezione');
+            alert(codiceispezione);
+        }
+    );
 
     $("#a1-SALVA").on('click',function(e){
         e.preventDefault();
