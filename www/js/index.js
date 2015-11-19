@@ -1491,13 +1491,6 @@ function onDeviceReady() {
     // (f) Login
     //---------------------------------------------------------------------------------------
 
-
-    $('#listapostazionimancanti').on('click', 'li', function() {
-        alert (JSON.stringify($(this)));
-        var codiceispezione=$(this).attr('codiceispezione');
-        alert("Works:"+codiceispezione); // id of clicked li by directly accessing DOMElement property
-    });
-
     //---------------------------------------------------------------------------------------
     // (i) Ispezioni
     //---------------------------------------------------------------------------------------
@@ -1673,6 +1666,7 @@ function onDeviceReady() {
     $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
         alert("E ora?");
         if ($.mobile.pageData && $.mobile.pageData.id){
+            alert("Siamo qui dentro");
             var codicepostazione=$.mobile.pageData.id;
             PostazioneCorrente.codice_postazione=codicepostazione;
             //alert("codicevisita= "+codicevisita);
