@@ -1674,8 +1674,7 @@ function onDeviceReady() {
         if (dataObj['PM_stato_postazione']) {
             db.transaction(
                 function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET stato_postazione="+dataObj['PM_stato_postazione']+",data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [codice_ispezione]); },
-                function () { alert("errore");
-                },
+                onDbError,
                 function () {
                     AggiornaSuServer();
                     location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
