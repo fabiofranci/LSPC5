@@ -108,6 +108,7 @@ function onDeviceReady() {
     var scanText='';
     var postazioneCorrente={};
     var VisitaCorrente={};
+    var PostazioneMancante={};
 
     var sedi=new Array(); //lo popoliamo dopo getSediClientiListFromServer()
     var descrizioniservizio=new Array(); //lo popoliamo getTipiServizioListFromServer()
@@ -1655,8 +1656,7 @@ function onDeviceReady() {
 
     $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
         if ($.mobile.pageData && $.mobile.pageData.id){
-            var codiceispezione=$.mobile.pageData.id;
-
+            var PostazioneMancante.codiceispezione=$.mobile.pageData.id;
         }
     });
 
@@ -1673,7 +1673,7 @@ function onDeviceReady() {
         //controllo campi obbligatori
         if (dataObj['PM_stato_postazione']) {
             db.transaction(
-                function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET stato_postazione="+dataObj['PM_stato_postazione']+",data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [codice_ispezione]); },
+                function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [PostazioneMancante.codiceispezione]); },
                 onDbError,
                 function () {
                     AggiornaSuServer();
