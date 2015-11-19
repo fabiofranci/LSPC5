@@ -1657,7 +1657,7 @@ function onDeviceReady() {
     $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
         if ($.mobile.pageData && $.mobile.pageData.id){
             var PostazioneMancante=$.mobile.pageData.id;
-            alert(PostazioneMancante);
+            $("#pm-codice_ispezione").val(PostazioneMancante);
         }
     });
 
@@ -1671,6 +1671,7 @@ function onDeviceReady() {
         for (i=0; i<len; i++) {
             dataObj[dataArray[i].name] = dataArray[i].value;
         }
+        alert("dentro form:"+dataObj['PM_codice_ispezione']);
         //controllo campi obbligatori
         if (dataObj['PM_stato_postazione']) {
             alert("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+PostazioneMancante+"'");
