@@ -198,6 +198,7 @@ function onDeviceReady() {
         } else {
             //Inizializzo gli array
 
+            //Users
             users.length=0;
             db.transaction(function (tx) {
                 tx.executeSql('SELECT * FROM SERVER_USERS', [], function (tx, results) {
@@ -207,9 +208,9 @@ function onDeviceReady() {
                             users[id]=results.rows.item(i);
                             //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                         }
-                    }, function() {
+                        alert("Utenti caricati nel sistema");
+                        sedi.length=0;
                         db.transaction(function (tx) {
-                            sedi.length=0;
                             tx.executeSql('SELECT * FROM SERVER_SEDI_CLIENTI', [], function (tx, results) {
                                     var len = results.rows.length, i;
                                     for (i = 0; i < len; i++){
@@ -218,7 +219,7 @@ function onDeviceReady() {
                                         sedi[id_sede]=cliente_e_sede;
                                         //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                     }
-                                }, function() {
+                                    alert("Sedi caricate nel sistema");
                                     db.transaction(function (tx) {
                                         descrizioniservizio.length=0;
                                         tipiservizio.length=0;
@@ -230,7 +231,7 @@ function onDeviceReady() {
                                                     tipiservizio[id_servizio]=results.rows.item(i).servizio;
                                                     //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
                                                 }
-                                            }, function() {
+                                                alert("Tipi servizio caricati nel sistema");
                                                 visite_in_corso.length=0;
                                                 $("#totvisiteincorso").html(visite_in_corso.length);
                                                 db.transaction(function (tx) {
@@ -241,38 +242,32 @@ function onDeviceReady() {
                                                                 visite_in_corso[codice_visita]=results.rows.item(i);
                                                                 console.log("visita:"+codice_visita);
                                                             }
-                                                        }, function() {
-                                                            alert("Array caricati da db locale!");
                                                             if (IDDIPENDENTE>0)   {
                                                                 $("#menuhome").show();
                                                                 $("#finestrasincro").hide();
                                                                 $("#finestralogin").hide();
-                                                                $(".sincrotable").removeClass("updated_class");
-                                                                $(".sincrotable").addClass("updating_class");
-                                                                console.log(msg);
                                                             } else {
                                                                 $("#menuhome").hide();
                                                                 $("#finestrasincro").hide();
                                                                 $("#finestralogin").show();
-                                                                $(".sincrotable").removeClass("updated_class");
-                                                                $(".sincrotable").addClass("updating_class");
-                                                                console.log(msg);
                                                             }
+                                                        }, function() {
                                                         }
                                                     );
                                                 });
+                                            }, function() {
                                             }
                                         );
                                     });
+                                }, function() {
                                 }
                             );
                         });
+
+                    }, function() {
                     }
                 );
             });
-
-
-
             //$("#menuhome").hide();
             //$("#finestralogin").show();
             //$("#finestrasincro").hide();
