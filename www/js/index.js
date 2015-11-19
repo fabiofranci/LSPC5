@@ -1456,6 +1456,7 @@ function onDeviceReady() {
                 function () { alert("errore");
                 },
                 function () {
+                    $('#FORMispezioneA1').trigger("reset");
                     AggiornaSuServer();
                     location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
@@ -1488,6 +1489,7 @@ function onDeviceReady() {
                 function () { alert("errore");
                 },
                 function () {
+                    $('#FORMispezioneA2').trigger("reset");
                     AggiornaSuServer();
                     location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
@@ -1520,6 +1522,7 @@ function onDeviceReady() {
                 function () { alert("errore");
                 },
                 function () {
+                    $('#FORMispezioneB').trigger("reset");
                     AggiornaSuServer();
                     location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
@@ -1552,6 +1555,7 @@ function onDeviceReady() {
                 function () { alert("errore");
                 },
                 function () {
+                    $('#FORMispezioneC').trigger("reset");
                     AggiornaSuServer();
                     location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
@@ -1584,6 +1588,7 @@ function onDeviceReady() {
                 function () { alert("errore");
                 },
                 function () {
+                    $('#FORMispezioneE').trigger("reset");
                     AggiornaSuServer();
                     location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
                     //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
