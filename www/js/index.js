@@ -1674,10 +1674,10 @@ function onDeviceReady() {
         alert("dentro form:"+dataObj['PM_codice_ispezione']);
         //controllo campi obbligatori
         if (dataObj['PM_stato_postazione']) {
-            alert("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+PostazioneMancante+"'");
-            console.log("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+PostazioneMancante+"'");
+            alert("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+dataObj['PM_codice_ispezione']+"'");
+            console.log("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione='"+dataObj['PM_codice_ispezione']+"'");
             db.transaction(
-                function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [PostazioneMancante]); },
+                function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET stato_postazione='"+dataObj['PM_stato_postazione']+"',data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [dataObj['PM_codice_ispezione']]); },
                 onDbError,
                 function () {
                     AggiornaSuServer();
