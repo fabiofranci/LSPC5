@@ -1670,7 +1670,7 @@ function onDeviceReady() {
                         $("#postazione_mancante_tipo_servizio").html('('+tipiservizio[postazioneCorrente.id_servizio]+') '+descrizioniservizio[postazioneCorrente.id_servizio]);
                         $("#postazione_mancante_nome").html('nome postazione: '+postazioneCorrente.nome);
                         $("#postazione_mancante_CodicePostazione").html('codice postazione: '+postazioneCorrente.codice_postazione);
-                        $("#postazione_mancante").trigger("create");
+                        $("#postazionemancante").trigger("create");
                     }, function() {
                         //alert("getVisitaCorrente: Errore DB!");
                     }
