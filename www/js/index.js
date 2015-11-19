@@ -778,19 +778,18 @@ function onDeviceReady() {
         console.log(msg);
         db.transaction(
             function (tx) { tx.executeSql("INSERT OR REPLACE INTO LOCAL_ULTIMOAGGIORNAMENTO (id,ultimo_aggiornamento) VALUES (?,?)", [1,global_ultimo_aggiornamento]); },
-            function () {
-                if (chiedilogin) {
-                location.href=("#Login");
-                } else {
-                    $("#menuhome").show();
-                    $("#finestrasincro").hide();
-                    $(".sincrotable").removeClass("updated_class");
-                    $(".sincrotable").addClass("updating_class");
-                }
-            },
+            function () { alert("ultimo aggiornamento non inserito"); },
             function () { //alert("ispezione "+isp.id + " inserita");
             }
         );
+        if (chiedilogin) {
+            location.href=("#Login");
+        } else {
+            $("#menuhome").show();
+            $("#finestrasincro").hide();
+            $(".sincrotable").removeClass("updated_class");
+            $(".sincrotable").addClass("updating_class");
+        }
     }
 
     // (i) Cerca Postazione
