@@ -1382,13 +1382,11 @@ function onDeviceReady() {
         e.preventDefault();
         var pin=$("#pin").val();
         var trovato=false;
-        alert(pin);
         for (var key in users) {
             user=users[key];
-            alert(user.id);
+            //alert(user.id);
             if (user.PIN==pin) {
-                alert("LOGIN OK! Riconosciuto id_user="+user.id);
-                alert("Benvenuto "+user.Nome+" "+user.Cognome);
+                alert("PIN Corretto! Benvenuto "+user.Nome+" "+user.Cognome);
                 IDDIPENDENTE=user.id;
                 trovato=true;
             }
@@ -1398,7 +1396,7 @@ function onDeviceReady() {
             $("#finestralogin").hide();
             $("#menuhome").show();
         } else {
-            alert("Riprova ad inserire un PIN diverso!")
+            alert("Questo PIN non corrisponde a nessun utente! Riprova")
         }
     });
 
