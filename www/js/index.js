@@ -324,7 +324,7 @@ function onDeviceReady() {
                                             //quando arriva qui ha finito!!!
                                             $("#IspezioniSuServer").removeClass('updating_class');
                                             $("#IspezioniSuServer").addClass('updated_class');
-                                            alert("Chiamo users");
+                                            //alert("Chiamo users");
                                             getUsersListFromServer();
 
                                             //getClientiListFromServer();
@@ -372,6 +372,19 @@ function onDeviceReady() {
                         onDbError,
                         function () {
                             //alert(i+" clienti inseriti");
+                            users.length=0;
+                            db.transaction(function (tx) {
+                                tx.executeSql('SELECT * FROM SERVER_USERS', [], function (tx, results) {
+                                        var len = results.rows.length, i;
+                                        for (i = 0; i < len; i++){
+                                            id_user=results.rows.item(i).id_user;
+                                            users[id_user]=results.rows.item(i);
+                                            //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                                        }
+                                    }, function() {
+                                    }
+                                );
+                            });
 
                             $("#Users").removeClass('updating_class');
                             $("#Users").addClass('updated_class');
@@ -379,6 +392,19 @@ function onDeviceReady() {
                         }
                     );
                 } else {
+                    users.length=0;
+                    db.transaction(function (tx) {
+                        tx.executeSql('SELECT * FROM SERVER_USERS', [], function (tx, results) {
+                                var len = results.rows.length, i;
+                                for (i = 0; i < len; i++){
+                                    id_user=results.rows.item(i).id_user;
+                                    users[id_user]=results.rows.item(i);
+                                    //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                                }
+                            }, function() {
+                            }
+                        );
+                    });
                     $("#Users").removeClass('updating_class');
                     $("#Users").addClass('updated_class');
                     getClientiListFromServer();
