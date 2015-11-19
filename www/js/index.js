@@ -699,16 +699,16 @@ function onDeviceReady() {
 
                             $("#Visite").removeClass('updating_class');
                             $("#Visite").addClass('updated_class');
-                            visite_server.length=0;
-                            $("#totvisiteincorso").html(visite_server.length);
+                            visite_in_corso.length=0;
+                            $("#totvisiteincorso").html(visite_in_corso.length);
                             db.transaction(function (tx) {
                                 tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
                                         var len = results.rows.length, i;
                                         for (i = 0; i < len; i++){
                                             codice_visita=results.rows.item(i).codice_visita;
-                                            visite_server[codice_visita]=results.rows.item(i);
+                                            visite_in_corso[codice_visita]=results.rows.item(i);
                                             console.log("visita:"+codice_visita);
-                                            $("#totvisiteincorso").html(visite_server.length);
+                                            $("#totvisiteincorso").html(visite_in_corso.length);
                                         }
                                     }, function() {
                                     }
@@ -721,16 +721,16 @@ function onDeviceReady() {
                         }
                     );
                 } else {
-                    visite_server.length=0;
-                    $("#totvisiteincorso").html(visite_server.length);
+                    visite_in_corso.length=0;
+                    $("#totvisiteincorso").html(visite_in_corso.length);
                     db.transaction(function (tx) {
                         tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
                                 var len = results.rows.length, i;
                                 for (i = 0; i < len; i++){
                                     codice_visita=results.rows.item(i).codice_visita;
-                                    visite_server[codice_visita]=results.rows.item(i);
+                                    visite_in_corso[codice_visita]=results.rows.item(i);
                                     console.log("Visita:"+codice_visita);
-                                    $("#totvisiteincorso").html(visite_server.length);
+                                    $("#totvisiteincorso").html(visite_in_corso.length);
                                     //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                                 }
                             }, function() {
@@ -1022,13 +1022,13 @@ function onDeviceReady() {
             function () {
                 //alert("visita inserita localmente, ora devo mettere le ispezioni");
                 var AggiornamentiVisite=true;
-                visite_server.length=0;
+                visite_in_corso.length=0;
                 db.transaction(function (tx) {
                     tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
                             var len = results.rows.length, i;
                             for (i = 0; i < len; i++){
                                 codice_visita=results.rows.item(i).codice_visita;
-                                visite_server[codice_visita]=results.rows.item(i);
+                                visite_in_corso[codice_visita]=results.rows.item(i);
                                 //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                             }
                         }, function() {
@@ -1148,8 +1148,8 @@ function onDeviceReady() {
 
     $("#buttonVisite").on('click',function(){
         var datiRiga='';
-        for (var key in visite_server) {
-            visita=visite_server[key];
+        for (var key in visite_in_corso) {
+            visita=visite_in_corso[key];
             //alert(visita.codice_visita);
             //alert(visita.id_sede);
             datiRiga+="<a href='#singola_visita?id="+visita.codice_visita+"'><button data-theme='f'> Visita del "+visita.data_inizio_visita+"</button></a>";
