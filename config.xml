@@ -67,6 +67,6 @@
   <!--<platform name="ios|winphone|wp8|android" />  -->
 <feature name="debug-server" required="true">
     <param name="domain" value="http://150.217.18.198:8080"/>
-    <param name="key" value="1746062"/>
+    <param name="key" value="1768677"/>
   </feature>
 </widget>
