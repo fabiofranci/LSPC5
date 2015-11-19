@@ -700,6 +700,7 @@ function onDeviceReady() {
                             $("#Visite").removeClass('updating_class');
                             $("#Visite").addClass('updated_class');
                             visite_server.length=0;
+                            $("#totvisiteincorso").html(visite_server.length);
                             db.transaction(function (tx) {
                                 tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
                                         var len = results.rows.length, i;
@@ -721,6 +722,7 @@ function onDeviceReady() {
                     );
                 } else {
                     visite_server.length=0;
+                    $("#totvisiteincorso").html(visite_server.length);
                     db.transaction(function (tx) {
                         tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
                                 var len = results.rows.length, i;
