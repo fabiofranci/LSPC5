@@ -784,7 +784,8 @@ function onDeviceReady() {
             }
         );
         if (chiedilogin) {
-            location.href=("#Login");
+            alert("Chiederei login");
+            //location.href=("#Login");
         } else {
             $("#menuhome").show();
             $("#finestrasincro").hide();
