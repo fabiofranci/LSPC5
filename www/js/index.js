@@ -184,9 +184,12 @@ function onDeviceReady() {
         $("#finestralogin").hide();
         $("#finestrasincro").show();
         var Connessione=checkConnessione();
+        AggiornaSuServer();
+
+
         if (Connessione) {
             //alert(global_ultimo_aggiornamento);
-            AggiornaSuServer();
+            //AggiornaSuServer();
             //getClientiListFromServer();
             //getSediClientiListFromServer();
             //getTipiServizioListFromServer();
@@ -195,10 +198,9 @@ function onDeviceReady() {
             //getIspezioniListFromServer();
             //setUltimoAggiornamento();
         } else {
-            $("#menuhome").show();
-            $("#finestrasincro").hide();
-            InizializzaArray();
-            alert("Nessuna connessione, sincronizzazione non possibile!");
+            //$("#menuhome").hide();
+            //$("#finestralogin").show();
+            //$("#finestrasincro").hide();
         }
     }
 
