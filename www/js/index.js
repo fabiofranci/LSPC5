@@ -1519,6 +1519,7 @@ function onDeviceReady() {
 
 
     $('#listapostazionimancanti').on('click', 'li', function() {
+        alert($(this));
         var codiceispezione=$(this).attr('codiceispezione');
         alert("Works:"+codiceispezione); // id of clicked li by directly accessing DOMElement property
     });
