@@ -184,14 +184,10 @@ function onDeviceReady() {
         $("#finestralogin").hide();
         $("#finestrasincro").show();
         var Connessione=checkConnessione();
-        AggiornaSuServer();
-
-
-        Connessione=false;
 
         if (Connessione) {
             //alert(global_ultimo_aggiornamento);
-            //AggiornaSuServer();
+            AggiornaSuServer();
             //getClientiListFromServer();
             //getSediClientiListFromServer();
             //getTipiServizioListFromServer();
@@ -200,6 +196,83 @@ function onDeviceReady() {
             //getIspezioniListFromServer();
             //setUltimoAggiornamento();
         } else {
+            //Inizializzo gli array
+
+            users.length=0;
+            db.transaction(function (tx) {
+                tx.executeSql('SELECT * FROM SERVER_USERS', [], function (tx, results) {
+                        var len = results.rows.length, i;
+                        for (i = 0; i < len; i++){
+                            id=results.rows.item(i).id;
+                            users[id]=results.rows.item(i);
+                            //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                        }
+                    }, function() {
+                        db.transaction(function (tx) {
+                            sedi.length=0;
+                            tx.executeSql('SELECT * FROM SERVER_SEDI_CLIENTI', [], function (tx, results) {
+                                    var len = results.rows.length, i;
+                                    for (i = 0; i < len; i++){
+                                        cliente_e_sede=results.rows.item(i).cliente_e_sede;
+                                        id_sede=results.rows.item(i).id;
+                                        sedi[id_sede]=cliente_e_sede;
+                                        //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
+                                    }
+                                }, function() {
+                                    db.transaction(function (tx) {
+                                        descrizioniservizio.length=0;
+                                        tipiservizio.length=0;
+                                        tx.executeSql('SELECT * FROM SERVER_TIPI_SERVIZIO', [], function (tx, results) {
+                                                var len = results.rows.length, i;
+                                                for (i = 0; i < len; i++){
+                                                    var id_servizio=results.rows.item(i).id;
+                                                    descrizioniservizio[id_servizio]=results.rows.item(i).descrizione_servizio;
+                                                    tipiservizio[id_servizio]=results.rows.item(i).servizio;
+                                                    //alert("Inserisco in servizio numero:"+id_servizio+" tiposervizio:"+servizio+" e descrizione:"+descrizione_servizio);
+                                                }
+                                            }, function() {
+                                                visite_in_corso.length=0;
+                                                $("#totvisiteincorso").html(visite_in_corso.length);
+                                                db.transaction(function (tx) {
+                                                    tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso"', [], function (tx, results) {
+                                                            var len = results.rows.length, i;
+                                                            for (i = 0; i < len; i++){
+                                                                codice_visita=results.rows.item(i).codice_visita;
+                                                                visite_in_corso[codice_visita]=results.rows.item(i);
+                                                                console.log("visita:"+codice_visita);
+                                                            }
+                                                        }, function() {
+                                                            alert("Array caricati da db locale!");
+                                                            if (IDDIPENDENTE>0)   {
+                                                                $("#menuhome").show();
+                                                                $("#finestrasincro").hide();
+                                                                $("#finestralogin").hide();
+                                                                $(".sincrotable").removeClass("updated_class");
+                                                                $(".sincrotable").addClass("updating_class");
+                                                                console.log(msg);
+                                                            } else {
+                                                                $("#menuhome").hide();
+                                                                $("#finestrasincro").hide();
+                                                                $("#finestralogin").show();
+                                                                $(".sincrotable").removeClass("updated_class");
+                                                                $(".sincrotable").addClass("updating_class");
+                                                                console.log(msg);
+                                                            }
+                                                        }
+                                                    );
+                                                });
+                                            }
+                                        );
+                                    });
+                                }
+                            );
+                        });
+                    }
+                );
+            });
+
+
+
             //$("#menuhome").hide();
             //$("#finestralogin").show();
             //$("#finestrasincro").hide();
