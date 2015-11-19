@@ -668,8 +668,6 @@ function onDeviceReady() {
         );
     }
 
-
-
     function getVisiteListFromServer() {
         console.log("Dentro getVisiteListFromServer");
      rigaselect='';
@@ -1380,7 +1378,18 @@ function onDeviceReady() {
     // (i) Login
     //---------------------------------------------------------------------------------------
 
-    $("#SALVALOGIN").on('click',function(e){
+    $("#buttonLogout").on('click',function(e){
+        e.preventDefault();
+        result=confirm("Vuoi uscire dall'app e rientrare con un altro utente?");
+        if (result==1) {
+            IDDIPENDENTE='';
+            $("#finestrasincro").hide();
+            $("#finestralogin").show();
+            $("#menuhome").hide();
+        }
+    });
+
+        $("#SALVALOGIN").on('click',function(e){
         e.preventDefault();
         var pin=$("#pin").val();
         var trovato=false;
