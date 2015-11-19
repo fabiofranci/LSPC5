@@ -387,8 +387,8 @@ function onDeviceReady() {
                                 );
                             });
 
-                            $("#Users").removeClass('updating_class');
-                            $("#Users").addClass('updated_class');
+                            $("#Utenti").removeClass('updating_class');
+                            $("#Utenti").addClass('updated_class');
                             getClientiListFromServer();
                         }
                     );
@@ -406,8 +406,8 @@ function onDeviceReady() {
                             }
                         );
                     });
-                    $("#Users").removeClass('updating_class');
-                    $("#Users").addClass('updated_class');
+                    $("#Utenti").removeClass('updating_class');
+                    $("#Utenti").addClass('updated_class');
                     getClientiListFromServer();
                 }
             }
