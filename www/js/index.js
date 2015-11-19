@@ -803,12 +803,21 @@ function onDeviceReady() {
             function () { alert("ultimo aggiornamento non inserito"); },
             function () { //alert("ispezione "+isp.id + " inserita");
 
-                $("#menuhome").hide();
-                $("#finestrasincro").hide();
-                $("#finestralogin").show();
-                $(".sincrotable").removeClass("updated_class");
-                $(".sincrotable").addClass("updating_class");
-                console.log(msg);
+             if (IDDIPENDENTE>0)   {
+                 $("#menuhome").show();
+                 $("#finestrasincro").hide();
+                 $("#finestralogin").hide();
+                 $(".sincrotable").removeClass("updated_class");
+                 $(".sincrotable").addClass("updating_class");
+                 console.log(msg);
+             } else {
+                 $("#menuhome").hide();
+                 $("#finestrasincro").hide();
+                 $("#finestralogin").show();
+                 $(".sincrotable").removeClass("updated_class");
+                 $(".sincrotable").addClass("updating_class");
+                 console.log(msg);
+             }
             }
         );
 
@@ -996,8 +1005,7 @@ function onDeviceReady() {
                         alert(ultimo_aggiornamento);
                         db.transaction(
                             function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare']); },
-                            function () { //alert("errore");
-                            },
+                            onDbError,
                             function () { //alert("ispezione "+codice_ispezione+" inserita");
                             }
                         );
@@ -1401,6 +1409,7 @@ function onDeviceReady() {
                 alert("PIN Corretto! Benvenuto "+user.Nome+" "+user.Cognome);
                 IDDIPENDENTE=user.id;
                 trovato=true;
+                $("#pin").val('');
             }
         }
         if (trovato==true) {
