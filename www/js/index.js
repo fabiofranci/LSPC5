@@ -76,7 +76,7 @@ function onDeviceReady() {
     var AggiornamentiVisite=false;
     var AggiornamentiIspezioni=false;
 
-    var IDDIPENDENTE=6;
+    var IDDIPENDENTE='';
     //Mettere il login con il PIN
 
     var db, len, datiRiga, lastinsertid=0, newid=0, VisiteInCorso=0, VisiteArchivio=0;
