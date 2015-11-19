@@ -181,7 +181,7 @@ function onDeviceReady() {
 
     function sincronizzaDaServer() {
         $("#menuhome").hide();
-        $("#finestralogin").show();
+        $("#finestralogin").hide();
         $("#finestrasincro").show();
         var Connessione=checkConnessione();
         if (Connessione) {
@@ -1385,6 +1385,7 @@ function onDeviceReady() {
         alert(pin);
         for (var key in users) {
             user=users[key];
+            alert(user.id_user);
             if (user.PIN==pin) {
                 alert("LOGIN OK! Riconosciuto id_user="+user.id_user);
                 alert("Benvenuto "+user.Nome+" "+user.Cognome);
