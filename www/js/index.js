@@ -1670,6 +1670,31 @@ function onDeviceReady() {
     // (f) Ispezioni
     //---------------------------------------------------------------------------------------
 
+    $(document).on("pagebeforeshow","#postazionemancante",function(){ // When entering pagetwo
+        if ($.mobile.pageData && $.mobile.pageData.id){
+            var codicepostazione=$.mobile.pageData.id;
+            PostazioneCorrente.codice_postazione=codicepostazione;
+            //alert("codicevisita= "+codicevisita);
+            db.transaction(function (tx) {
+                tx.executeSql('SELECT * FROM LOCAL_POSTAZIONI WHERE codice_postazione=? ', [codicepostazione], function (tx, dati) {
+                        var len = dati.rows.length;
+                        PostazioneCorrente.codice_ispezione=dati.rows.item(0).codice_ispezione;
+                        PostazioneCorrente.id_sede=dati.rows.item(0).id_sede;
+                        PostazioneCorrente.id_servizio=dati.rows.item(0).id_servizio;
+                        PostazioneCorrente.nome=dati.rows.item(0).nome;
+                        $("#postazione_mancante_cliente").html(sedi[postazioneCorrente.id_sede]);
+                        $("#postazione_mancante_tipo_servizio").html('('+tipiservizio[postazioneCorrente.id_servizio]+') '+descrizioniservizio[postazioneCorrente.id_servizio]);
+                        $("#postazione_mancante_nome").html('nome postazione: '+postazioneCorrente.nome);
+                        $("#postazione_mancante_CodicePostazione").html('codice postazione: '+postazioneCorrente.codice_postazione);
+                        $("#postazione_mancante").trigger("create");
+                    }, function() {
+                        //alert("getVisitaCorrente: Errore DB!");
+                    }
+                );
+            });
+        }
+    });
+
     $("#PM-SALVA").on('click',function(e){
         e.preventDefault();
         var ultimo_aggiornamento=getDateTime();
