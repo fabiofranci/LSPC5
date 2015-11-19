@@ -355,9 +355,9 @@ function onDeviceReady() {
                 var i=0;
                 $.each(users_server, function (index, user) {
                     if (i==0) {
-                        rigaselect="INSERT OR REPLACE INTO SERVER_USERS (id, id_ruolo, PIN, Nome, Cognome, email) SELECT '"+user.id+"' AS id, '"+user.id_ruolo+"' AS id_ruolo, '"+user.id+"' as PIN, '"+user.Nome+"' AS Nome, '"+user.Cognome+"' as Cognome, '"+user.email+"' AS email";
+                        rigaselect="INSERT OR REPLACE INTO SERVER_USERS (id, id_ruolo, PIN, Nome, Cognome, email) SELECT '"+user.id_user+"' AS id, '"+user.id_ruolo+"' AS id_ruolo, '"+user.PIN+"' as PIN, '"+user.Nome+"' AS Nome, '"+user.Cognome+"' as Cognome, '"+user.email+"' AS email";
                     } else {
-                        rigaselect+=" UNION ALL SELECT '"+user.id+"','"+user.id_ruolo+"','"+user.PIN+"','"+user.Nome+"','"+user.Cognome+"','"+user.email+"'";
+                        rigaselect+=" UNION ALL SELECT '"+user.id_user+"','"+user.id_ruolo+"','"+user.PIN+"','"+user.Nome+"','"+user.Cognome+"','"+user.email+"'";
                     }
                     i++;
                 });
