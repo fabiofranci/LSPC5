@@ -108,6 +108,8 @@ function onDeviceReady() {
     var scanText='';
     var postazioneCorrente={};
     var VisitaCorrente={};
+    var latitudine_corrente='';
+    var longitudine_corrente='';
 
     var sedi=new Array(); //lo popoliamo dopo getSediClientiListFromServer()
     var descrizioniservizio=new Array(); //lo popoliamo getTipiServizioListFromServer()
@@ -121,6 +123,9 @@ function onDeviceReady() {
 // current GPS coordinates
 //
     var onSuccessGeo = function(position) {
+        latitudine_corrente=position.coords.latitude;
+        longitudine_corrente=position.coords.longitude;
+        /*
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -129,6 +134,7 @@ function onDeviceReady() {
             'Heading: '           + position.coords.heading           + '\n' +
             'Speed: '             + position.coords.speed             + '\n' +
             'Timestamp: '         + position.timestamp                + '\n');
+            */
     };
 
 // onError Callback receives a PositionError object
@@ -983,14 +989,29 @@ function onDeviceReady() {
 
                                 result=confirm("Vuoi aggiungere la postazione alla visita corrente?");
                                 if (result==1) {
-                                    db.transaction(
-                                        function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare]); },
-                                        onDbError,
-                                        function () { alert("ispezione "+codice_ispezione+" inserita");
-                                        }
-                                    );
 
-                                    var AggiornamentiIspezioni=true;
+                                    navigator.geolocation.getCurrentPosition(function(position) {
+                                        latitudine_corrente=position.coords.latitude;
+                                        longitudine_corrente=position.coords.longitude;
+                                        /*
+                                         alert('Latitude: '          + position.coords.latitude          + '\n' +
+                                         'Longitude: '         + position.coords.longitude         + '\n' +
+                                         'Altitude: '          + position.coords.altitude          + '\n' +
+                                         'Accuracy: '          + position.coords.accuracy          + '\n' +
+                                         'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                                         'Heading: '           + position.coords.heading           + '\n' +
+                                         'Speed: '             + position.coords.speed             + '\n' +
+                                         'Timestamp: '         + position.timestamp                + '\n');
+                                         */
+                                        db.transaction(
+                                            function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare,latitudine_corrente,longitudine_corrente]); },
+                                            onDbError,
+                                            function () { alert("ispezione "+codice_ispezione+" inserita");
+                                                AggiornamentiIspezioni=true;
+                                            }
+                                        );
+
+                                    }, onErrorGeo);
                                 }
                             }
                         } else {
