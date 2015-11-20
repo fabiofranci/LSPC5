@@ -125,7 +125,31 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-        /*
+            console.log("lat:"+latitudine_corrente);
+            console.log("lon:"+longitudine_corrente);
+            $("#sede_cliente_container").html('');
+            var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
+            combo.append("<option value='0'> -- scegli cliente -- </option>");
+            for (var key in sedi) {
+                combo.append("<option value='"+key+"'>" + sedi[key] + "</option>");
+            }
+            $("#sede_cliente_container").append(combo);
+
+            $("#tipo_servizio_container").html('');
+            var combo2 = $("<select></select>").attr("id", 'id_tipo_servizio').attr("name", 'id_tipo_servizio');
+            combo2.append("<option value='0'> -- scegli tipo servizio -- </option>");
+
+            for (var key in descrizioniservizio) {
+                combo2.append("<option value='"+key+"'>" + descrizioniservizio[key] + "</option>");
+            }
+
+            $("#tipo_servizio_container").append(combo2);
+
+            $("#nome").val('');
+            $("#codice_postazione").val(scanText);
+            $("#nuova_postazione").trigger("create");
+            location.href="#nuova_postazione";
+                /*
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -1021,37 +1045,7 @@ function onDeviceReady() {
 
     // (i) Crea / Modifica Postazione
     function creaPostazione() {
-
-        navigator.geolocation.getCurrentPosition(function(position){
-            latitudine_corrente=position.coords.latitude;
-            longitudine_corrente=position.coords.longitude;
-            console.log("lat:"+latitudine_corrente);
-            console.log("lon:"+longitudine_corrente);
-            $("#sede_cliente_container").html('');
-            var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
-            combo.append("<option value='0'> -- scegli cliente -- </option>");
-            for (var key in sedi) {
-                combo.append("<option value='"+key+"'>" + sedi[key] + "</option>");
-            }
-            $("#sede_cliente_container").append(combo);
-
-            $("#tipo_servizio_container").html('');
-            var combo2 = $("<select></select>").attr("id", 'id_tipo_servizio').attr("name", 'id_tipo_servizio');
-            combo2.append("<option value='0'> -- scegli tipo servizio -- </option>");
-
-            for (var key in descrizioniservizio) {
-                combo2.append("<option value='"+key+"'>" + descrizioniservizio[key] + "</option>");
-            }
-
-            $("#tipo_servizio_container").append(combo2);
-
-            $("#nome").val('');
-            $("#codice_postazione").val(scanText);
-            $("#nuova_postazione").trigger("create");
-            location.href="#nuova_postazione";
-        }, onErrorGeo);
-
-
+        navigator.geolocation.getCurrentPosition(onSuccessGeo, onErrorGeo);
     }
 
     $("#nuovapostazione_submit").on("click", function (e) {
