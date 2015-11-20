@@ -33,7 +33,6 @@ $(document).ready(function() {
 
 function onDeviceReady() {
     $('#fcmsig').jSignature({'UndoButton':false,color:"#000000",lineWidth:1});
-    alert("pronti");
     // do everything here.
     $(document).bind("pagebeforechange", function( event, data ) {
         $.mobile.pageData = (data && data.options && data.options.pageData)
