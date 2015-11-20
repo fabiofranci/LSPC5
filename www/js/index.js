@@ -39,9 +39,6 @@ function onDeviceReady() {
             : null;
     });
 
-    var sigCapture = null;
-    sigCapture = new SignatureCapture( "signature" );
-
     function getDateTime() {
         var now     = new Date();
         var year    = now.getFullYear();
@@ -1724,10 +1721,7 @@ function onDeviceReady() {
         //controllo campi obbligatori
         if (dataObj['nome_cliente_firma']) {
             //var firmacliente=$('#fcmsig').jSignature("getData");
-
-            var firmacliente = sigCapture.toString();
-
-            /*
+            
             try {
                 navigator.camera.getPicture(function(data){
                     firmacliente="data:image/jpeg;base64,"+data;
@@ -1743,9 +1737,6 @@ function onDeviceReady() {
                 alert("Errore uso fotocamera");
                 return 1;
             }
-            */
-
-            alert("fuori:"+firmacliente);
 
             //alert(firmacliente);
             var stringacomando=comando.join(", ");

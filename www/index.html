@@ -32,14 +32,12 @@
     <link rel="stylesheet" type="text/css" href="css/mycss.css" />
     <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
     <script type="text/javascript" src="lib/jquery/jquery-2.1.4.min.js"></script>
-    <script src="js/modernizr.custom.34982.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/index2.js"></script>
     <script type="text/javascript" src="js/jSignature.min.js"></script>
     <script type="text/javascript" src="lib/jqm/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="js/jqm.page.params.js"></script>
-    <script type="text/javascript" src="js/signatureCapture.js"></script>
     <!-- (i) debug -->
     <!--<script src="http://2.227.193.86:8080/target/target-script-min.js#anonymous"></script>-->
     <!-- (f) debug -->
@@ -803,10 +801,6 @@
                     <input type="text" id="nome_cliente_firma" name="nome_cliente_firma"/><br/>
                     <div id="parentsignature" style="overflow:hidden;color:darkblue;background-color:lightgrey;margin-bottom:10px; padding: 5px;max-size: 340px;">
                         <div id="fcmsig" style="height:padding: 0 0 0 0;margin: 0 0 0 0;border: 2px dotted #000;width: 100%;"></div>
-                    </div>
-
-                    <div id="canvasContainer" width="100%" >
-                        <canvas id="signature" height="200px" />
                     </div>
 
                     <input data-theme="a" class="ui-btn-left" type="button" value="Correggi Firma" onclick="$('#fcmsig').jSignature('clear')"/>
