@@ -1025,7 +1025,8 @@ function onDeviceReady() {
         navigator.geolocation.getCurrentPosition(function(position){
             latitudine_corrente=position.coords.latitude;
             longitudine_corrente=position.coords.longitude;
-
+            console.log("lat:"+latitudine_corrente);
+            console.log("lon:"+longitudine_corrente);
             $("#sede_cliente_container").html('');
             var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
             combo.append("<option value='0'> -- scegli cliente -- </option>");
