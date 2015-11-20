@@ -302,6 +302,10 @@ function onDeviceReady() {
         tx.executeSql("DROP TABLE IF EXISTS LOCAL_ISPEZIONI");
         tx.executeSql("DROP TABLE IF EXISTS LOCAL_ULTIMOAGGIORNAMENTO");
         var global_ultimoaggiornamento='';
+
+
+
+
         //aproDatabase(); //ricreo il db e lo risincronizzo
     }
 
@@ -1354,6 +1358,7 @@ function onDeviceReady() {
         $("#postazione_trovata_CodicePostazione").html('codice postazione: '+postazioneCorrente.codice_postazione);
         db.transaction(function (tx) {
             var datiRiga='';
+            console.log('SELECT * FROM LOCAL_VISITE WHERE (id_sede='+postazioneCorrente.id_sede+' AND stato_visita="in_corso")');
             tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE (id_sede=? AND stato_visita="in_corso")', [postazioneCorrente.id_sede], function (tx, dati) {
                     var len = dati.rows.length, i;
                     if (len>0) {
