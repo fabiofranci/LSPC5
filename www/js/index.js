@@ -107,7 +107,6 @@ function onDeviceReady() {
     var users_server;
     var scanText='';
     var postazioneCorrente={};
-    var postazionedaaggiungere={};
     var VisitaCorrente={};
     var latitudine_corrente='';
     var longitudine_corrente='';
@@ -126,13 +125,7 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-            console.log("lat:"+latitudine_corrente);
-            console.log("lon:"+longitudine_corrente);
-        aggiungiPostazione(postazionedaaggiungere);
-        //inviaPostazioneToServer(nuovapostazione);
-        $("#home").trigger("create");
-        location.href = '#home';
-                /*
+        /*
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -151,16 +144,11 @@ function onDeviceReady() {
             'message: ' + error.message + '\n');
     }
 
-    function getPosizione(nuovapostazione) {
-        postazionedaaggiungere=nuovapostazione;
+    function getPosizione() {
         try {
             navigator.geolocation.getCurrentPosition(onSuccessGeo, onErrorGeo);
         } catch (err) {
-            aggiungiPostazione(nuovapostazione);
-            //inviaPostazioneToServer(nuovapostazione);
-            $("#home").trigger("create");
-            location.href = '#home';
-           // alert("Sono in locale, niente posizione");
+            alert("Sono in locale, niente posizione");
         }
     }
 
@@ -1033,6 +1021,7 @@ function onDeviceReady() {
 
     // (i) Crea / Modifica Postazione
     function creaPostazione() {
+        
         $("#sede_cliente_container").html('');
         var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
         combo.append("<option value='0'> -- scegli cliente -- </option>");
@@ -1055,6 +1044,7 @@ function onDeviceReady() {
         $("#codice_postazione").val(scanText);
         $("#nuova_postazione").trigger("create");
         location.href="#nuova_postazione";
+
     }
 
     $("#nuovapostazione_submit").on("click", function (e) {
@@ -1074,7 +1064,10 @@ function onDeviceReady() {
         if (errore) {
 
         } else {
-            getPosizione(nuovapostazione);
+            aggiungiPostazione(nuovapostazione);
+            //inviaPostazioneToServer(nuovapostazione);
+            $("#home").trigger("create");
+            location.href = '#home';
         }
     });
 
@@ -1086,8 +1079,6 @@ function onDeviceReady() {
             onDbError,
             function () {
                 var AggiornamentiPostazioni=true;
-                latitudine_corrente='';
-                longitudine_corrente='';
                 //ora bisogna aggiungere l'ispezione per la visita corrente, se c'è
                 if (VisitaCorrente.codice_visita) {
                     result=confirm("Aggiungi questa postazione alla visita corrente?");
@@ -1096,10 +1087,10 @@ function onDeviceReady() {
                         var codice_postazione=nuovapostazione.codice_postazione;
                         var codice_visita=VisitaCorrente.codice_visita;
                         var ultimo_aggiornamento=getDateTime();
-                        console.log(codice_ispezione);
-                        console.log(codice_postazione);
-                        console.log(codice_visita);
-                        console.log(ultimo_aggiornamento);
+                        alert(codice_ispezione);
+                        alert(codice_postazione);
+                        alert(codice_visita);
+                        alert(ultimo_aggiornamento);
                         db.transaction(
                             function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare']); },
                             onDbError,
