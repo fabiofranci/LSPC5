@@ -290,7 +290,7 @@ function onDeviceReady() {
         tx.executeSql("CREATE TABLE IF NOT EXISTS SERVER_SEDI_CLIENTI (id INTEGER PRIMARY KEY, cliente_e_sede, sede, indirizzo, CAP, citta, provincia, persona_di_riferimento, telefono, email, note,ultimo_aggiornamento)");
         tx.executeSql("CREATE TABLE IF NOT EXISTS SERVER_TIPI_SERVIZIO (id INTEGER PRIMARY KEY, servizio, descrizione_servizio,ultimo_aggiornamento )");
         tx.executeSql("CREATE TABLE IF NOT EXISTS SERVER_USERS (id INTEGER PRIMARY KEY, id_ruolo, PIN, Nome, Cognome, email,ultimo_aggiornamento)");
-        tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_POSTAZIONI (codice_postazione PRIMARY KEY, id_sede, id_servizio, nome,ultimo_aggiornamento)");
+        tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_POSTAZIONI (codice_postazione PRIMARY KEY, id_sede, id_servizio, nome,ultimo_aggiornamento,latitudine_p,longitudine_p)");
         tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_VISITE (codice_visita PRIMARY KEY, id_sede, id_dipendente, data_inizio_visita, data_fine_visita, stato_visita,ultimo_aggiornamento,azioni_correttive,nr_certificato,c1a,c2a,c3a,c4a,c5a,c1b,c2b,c3b,c4b,c5b,c6b,c7b,c8b,c9b,c10b,c11b,c12b,c13b,c14b,c15b,c16b,c17b,c18b,c18btesto,c1c,c2c,c1d,c2d,c3d,c4d,c5d,c6d,c6dtesto,c1e,c2e,c3e,c4e,c6e,c7etesto,nome_cliente_firma,firma_cliente)");
         tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_ISPEZIONI (codice_ispezione PRIMARY KEY, codice_postazione, codice_visita, ultimo_aggiornamento, data_ispezione, stato_postazione, stato_esca_roditori, collocato_adescante_roditori, stato_piastra_collante_insetti_striscianti, ooteche_orientalis, adulti_orientalis, ooteche_germanica, adulti_germanica, ooteche_supella_longipalpa, adulti_supella_longipalpa, ooteche_periplaneta_americana, adulti_periplaneta_americana, stato_piastra_insetti_volanti, presenza_muscidi, presenza_imenotteri_vespidi, presenza_imenotteri_calabronidi, presenza_dittere, presenza_altri_tipi_insetti, note_per_cliente, nutrie_tana, nutrie_target, presenza_target_lepidotteri, tipo_target_lepidotteri, latitudine, longitudine )");
         tx.executeSql("CREATE TABLE IF NOT EXISTS LOCAL_ULTIMOAGGIORNAMENTO (id INTEGER PRIMARY KEY, ultimo_aggiornamento)");
@@ -715,9 +715,9 @@ function onDeviceReady() {
                 var i=0;
                 $.each(postazioni_server, function (index, postazione) {
                     if (i==0) {
-                        rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome";
+                        rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, latitudine_p, longitudine_p) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome, '"+postazione.latitudine_p+"' AS latitudine_p, '"+postazione.longitudine_p+"' AS longitudine_p";
                     } else {
-                        rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"'";
+                        rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"','"+postazione.latitudine_p+"','"+postazione.longitudine_p+"'";
                     }
                     i++;
                 });
@@ -980,38 +980,27 @@ function onDeviceReady() {
                                 postazioneCorrente.id_servizio=dati.rows.item(0).id_servizio;
                                 postazioneCorrente.nome=dati.rows.item(0).nome;
                                 postazioneCorrente.codice_postazione=dati.rows.item(0).codice_postazione;
+                                postazioneCorrente.latitudine_p=dati.rows.item(0).latitudine_p;
+                                postazioneCorrente.longitudine_p=dati.rows.item(0).longitudine_p;
                                 var codice_ispezione=VisitaCorrente.codice_visita+"|"+postazioneCorrente.codice_postazione;
                                 var codice_postazione=postazioneCorrente.codice_postazione;
                                 var codice_visita=VisitaCorrente.codice_visita;
                                 var ultimo_aggiornamento=getDateTime();
                                 var ancora_da_visionare='Ancora da Visionare';
+                                var latitudine=postazioneCorrente.latitudine_p;
+                                var longitudine=postazioneCorrente.longitudine_p;
                                 //alert("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione) VALUES (?,?,?) "+"["+codice_ispezione+", "+codice_visita+","+codice_postazione+"]");
 
                                 result=confirm("Vuoi aggiungere la postazione alla visita corrente?");
                                 if (result==1) {
+                                    db.transaction(
+                                        function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare,latitudine,longitudine]); },
+                                        onDbError,
+                                        function () { alert("ispezione "+codice_ispezione+" inserita");
+                                        }
+                                    );
 
-                                    navigator.geolocation.getCurrentPosition(function(position) {
-                                        latitudine_corrente=position.coords.latitude;
-                                        longitudine_corrente=position.coords.longitude;
-                                        /*
-                                         alert('Latitude: '          + position.coords.latitude          + '\n' +
-                                         'Longitude: '         + position.coords.longitude         + '\n' +
-                                         'Altitude: '          + position.coords.altitude          + '\n' +
-                                         'Accuracy: '          + position.coords.accuracy          + '\n' +
-                                         'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-                                         'Heading: '           + position.coords.heading           + '\n' +
-                                         'Speed: '             + position.coords.speed             + '\n' +
-                                         'Timestamp: '         + position.timestamp                + '\n');
-                                         */
-                                        db.transaction(
-                                            function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare,latitudine_corrente,longitudine_corrente]); },
-                                            onDbError,
-                                            function () { alert("ispezione "+codice_ispezione+" inserita");
-                                                AggiornamentiIspezioni=true;
-                                            }
-                                        );
-
-                                    }, onErrorGeo);
+                                    var AggiornamentiIspezioni=true;
                                 }
                             }
                         } else {
@@ -1032,28 +1021,35 @@ function onDeviceReady() {
 
     // (i) Crea / Modifica Postazione
     function creaPostazione() {
-        $("#sede_cliente_container").html('');
-        var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
-        combo.append("<option value='0'> -- scegli cliente -- </option>");
-        for (var key in sedi) {
-            combo.append("<option value='"+key+"'>" + sedi[key] + "</option>");
-        }
-        $("#sede_cliente_container").append(combo);
 
-        $("#tipo_servizio_container").html('');
-        var combo2 = $("<select></select>").attr("id", 'id_tipo_servizio').attr("name", 'id_tipo_servizio');
-        combo2.append("<option value='0'> -- scegli tipo servizio -- </option>");
+        navigator.geolocation.getCurrentPosition(function(position){
+            latitudine_corrente=position.coords.latitude;
+            longitudine_corrente=position.coords.longitude;
 
-        for (var key in descrizioniservizio) {
-            combo2.append("<option value='"+key+"'>" + descrizioniservizio[key] + "</option>");
-        }
+            $("#sede_cliente_container").html('');
+            var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
+            combo.append("<option value='0'> -- scegli cliente -- </option>");
+            for (var key in sedi) {
+                combo.append("<option value='"+key+"'>" + sedi[key] + "</option>");
+            }
+            $("#sede_cliente_container").append(combo);
 
-        $("#tipo_servizio_container").append(combo2);
+            $("#tipo_servizio_container").html('');
+            var combo2 = $("<select></select>").attr("id", 'id_tipo_servizio').attr("name", 'id_tipo_servizio');
+            combo2.append("<option value='0'> -- scegli tipo servizio -- </option>");
 
-        $("#nome").val('');
-        $("#codice_postazione").val(scanText);
-        $("#nuova_postazione").trigger("create");
-        location.href="#nuova_postazione";
+            for (var key in descrizioniservizio) {
+                combo2.append("<option value='"+key+"'>" + descrizioniservizio[key] + "</option>");
+            }
+
+            $("#tipo_servizio_container").append(combo2);
+
+            $("#nome").val('');
+            $("#codice_postazione").val(scanText);
+            $("#nuova_postazione").trigger("create");
+            location.href="#nuova_postazione";
+        }, onErrorGeo);
+
 
     }
 
@@ -1084,11 +1080,13 @@ function onDeviceReady() {
     function aggiungiPostazione(nuovapostazione) {
         db.transaction(
             function (tx) {
-                tx.executeSql("INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, ultimo_aggiornamento) VALUES (?,?,?,?,?)",[nuovapostazione.id_sede_cliente, nuovapostazione.id_tipo_servizio, nuovapostazione.codice_postazione, nuovapostazione.nome, nuovapostazione.ultimo_aggiornamento]);
+                tx.executeSql("INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, ultimo_aggiornamento, latitudine_p, longitudine_p) VALUES (?,?,?,?,?,?,?)",[nuovapostazione.id_sede_cliente, nuovapostazione.id_tipo_servizio, nuovapostazione.codice_postazione, nuovapostazione.nome, nuovapostazione.ultimo_aggiornamento,latitudine_corrente,longitudine_corrente]);
             },
             onDbError,
             function () {
                 var AggiornamentiPostazioni=true;
+                latitudine_corrente='';
+                longitudine_corrente='';
                 //ora bisogna aggiungere l'ispezione per la visita corrente, se c'è
                 if (VisitaCorrente.codice_visita) {
                     result=confirm("Aggiungi questa postazione alla visita corrente?");
@@ -1097,10 +1095,10 @@ function onDeviceReady() {
                         var codice_postazione=nuovapostazione.codice_postazione;
                         var codice_visita=VisitaCorrente.codice_visita;
                         var ultimo_aggiornamento=getDateTime();
-                        alert(codice_ispezione);
-                        alert(codice_postazione);
-                        alert(codice_visita);
-                        alert(ultimo_aggiornamento);
+                        console.log(codice_ispezione);
+                        console.log(codice_postazione);
+                        console.log(codice_visita);
+                        console.log(ultimo_aggiornamento);
                         db.transaction(
                             function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare']); },
                             onDbError,
