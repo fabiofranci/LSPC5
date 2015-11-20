@@ -1384,7 +1384,7 @@ function onDeviceReady() {
             VisitaCorrente.codice_visita=codicevisita;
             //alert("codicevisita= "+codicevisita);
             db.transaction(function (tx) {
-                tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE codice_visita=? ', [codicevisita], function (tx, dati) {
+                tx.executeSql('SELECT * FROM LOCAL_VISITE WHERE stato_visita="in_corso" AND codice_visita=? ', [codicevisita], function (tx, dati) {
                         var len = dati.rows.length;
                         VisitaCorrente.id_sede=dati.rows.item(0).id_sede;
                         VisitaCorrente.data_inizio_visita=dati.rows.item(0).data_inizio_visita;
@@ -1721,7 +1721,7 @@ function onDeviceReady() {
         //controllo campi obbligatori
         if (dataObj['nome_cliente_firma']) {
             //var firmacliente=$('#fcmsig').jSignature("getData");
-            
+
             try {
                 navigator.camera.getPicture(function(data){
                     firmacliente="data:image/jpeg;base64,"+data;
