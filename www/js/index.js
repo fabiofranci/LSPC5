@@ -1742,12 +1742,23 @@ function onDeviceReady() {
             try {
                 navigator.camera.getPicture(function(data){
                     firmacliente="data:image/jpeg;base64,"+data;
-                    //alert("Dentro:"+firmacliente);
+                    alert("Dentro:"+firmacliente);
+                    var stringacomando=comando.join(", ");
+                    //alert(stringacomando);
+                    db.transaction(
+                        function (tx3) { tx3.executeSql("UPDATE LOCAL_VISITE SET "+stringacomando+",firma_cliente='"+firmacliente+"',data_inizio_visita=data_inizio_visita,stato_visita='conclusa',data_fine_visita='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_visita=?", [VisitaCorrente.codice_visita]); },
+                        onDbError,
+                        function () {
+                            location.href="#home?sincronizza=1";
+                            //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
+                        }
+                    );
                 },null,{
                     correctOrientation: true,
                     destinationType : Camera.DestinationType.DATA_URL,
                     sourceType : Camera.PictureSourceType.CAMERA,
-                    quality : 50,
+                    quality: 20,
+                    allowEdit: true,
                     encodingType : Camera.EncodingType.JPEG
                 });
             } catch (err) {
@@ -1756,16 +1767,6 @@ function onDeviceReady() {
             }
 
             //alert(firmacliente);
-            var stringacomando=comando.join(", ");
-            //alert(stringacomando);
-            db.transaction(
-                function (tx3) { tx3.executeSql("UPDATE LOCAL_VISITE SET "+stringacomando+",firma_cliente='"+firmacliente+"',data_inizio_visita=data_inizio_visita,stato_visita='conclusa',data_fine_visita='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_visita=?", [VisitaCorrente.codice_visita]); },
-                onDbError,
-                function () {
-                    location.href="#home?sincronizza=1";
-                    //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
-                }
-            );
         } else {
             alert("Inserisci tutti i campi!")
         }
