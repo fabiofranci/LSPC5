@@ -1749,6 +1749,7 @@ function onDeviceReady() {
                         function (tx3) { tx3.executeSql("UPDATE LOCAL_VISITE SET "+stringacomando+",firma_cliente='"+firmacliente+"',data_inizio_visita=data_inizio_visita,stato_visita='conclusa',data_fine_visita='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_visita=?", [VisitaCorrente.codice_visita]); },
                         onDbError,
                         function () {
+                            alert("Visita conclusa");
                             location.href="#home?sincronizza=1";
                             //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
                         }
