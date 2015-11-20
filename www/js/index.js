@@ -125,7 +125,7 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-        /*
+        
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -134,7 +134,7 @@ function onDeviceReady() {
             'Heading: '           + position.coords.heading           + '\n' +
             'Speed: '             + position.coords.speed             + '\n' +
             'Timestamp: '         + position.timestamp                + '\n');
-            */
+
     };
 
 // onError Callback receives a PositionError object
@@ -1021,7 +1021,7 @@ function onDeviceReady() {
 
     // (i) Crea / Modifica Postazione
     function creaPostazione() {
-        
+
         $("#sede_cliente_container").html('');
         var combo = $("<select></select>").attr("id", 'id_sede_cliente').attr("name", 'id_sede_cliente');
         combo.append("<option value='0'> -- scegli cliente -- </option>");
