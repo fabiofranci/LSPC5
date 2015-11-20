@@ -125,7 +125,7 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-        
+
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -1128,6 +1128,7 @@ function onDeviceReady() {
                                 visite_in_corso[codice_visita]=results.rows.item(i);
                                 //alert("Inserisco in sede numero:"+id_sede+" sede:"+cliente_e_sede);
                             }
+                            recuperavisite(IDDIPENDENTE);
                         }, function() {
                         }
                     );
