@@ -65,7 +65,6 @@
   <access origin="*"/>
 <!--  <platform name="android" /> -->
   <!--<platform name="ios|winphone|wp8|android" />  -->
-<platform name="winphone|wp8|android" />
 <!--
 <feature name="debug-server" required="true">
     <param name="domain" value="http://2.227.193.86:8080"/>
