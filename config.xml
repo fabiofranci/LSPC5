@@ -63,7 +63,7 @@
   <gap:splash src="www/res/screen/ios/screen-ipad-landscape.png" gap:platform="ios" width="1024" height="768"/>
   <gap:splash src="www/res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone"/>
   <access origin="*"/>
-  <platform name="winphone|wp8|android" />
+  <platform name="android" />
   <!--<platform name="ios|winphone|wp8|android" />  -->
 <!--
 <feature name="debug-server" required="true">
