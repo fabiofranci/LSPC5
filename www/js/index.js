@@ -706,15 +706,21 @@ function onDeviceReady() {
 
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
-         rigaselect='';
+        rigaselect='';
+        righeselect=new Array();
 
         $.getJSON(serviceURL + 'gettablepostazioni.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getPostazioniListFromServer post success");
 
                 postazioni_server = data.items;
                 var i=0;
+                var j=0;
                 $.each(postazioni_server, function (index, postazione) {
-                    if (i==0) {
+                    if (i % 50 ==0) {
+                        if (i>0) {
+                            righeselect[j]=rigaselect;
+                            j=j+1;
+                        }
                         rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, latitudine_p, longitudine_p) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome, '"+postazione.latitudine_p+"' AS latitudine_p, '"+postazione.longitudine_p+"' AS longitudine_p";
                     } else {
                         rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"','"+postazione.latitudine_p+"','"+postazione.longitudine_p+"'";
@@ -722,24 +728,10 @@ function onDeviceReady() {
                     i++;
                 });
                 //alert(rigaselect);
-                console.log(rigaselect);
-                if (rigaselect) {
-                    //ora può lanciare la transazione
-                    db.transaction(
-                        function (tx3) {
-                            tx3.executeSql(rigaselect);
-                        },
-                        onDbError,
-                        function () {
-                            //alert(i+" clienti inseriti");
+                //console.log(rigaselect);
 
-                            $("#Postazioni").removeClass('updating_class');
-                            $("#Postazioni").addClass('updated_class');
-
-                            //ora chiama quella successiva
-                            getVisiteListFromServer();
-                        }
-                    );
+                if (j>0) {
+                    getPostazioniIncrement(righeselect,0);
                 } else {
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
@@ -747,6 +739,34 @@ function onDeviceReady() {
                     //ora chiama quella successiva
                     getVisiteListFromServer();
                 }
+
+
+            }
+        );
+    }
+
+    function getPostazioniIncrement(righeselect,k) {
+        var j=righeselect.length;
+        console.log("Dentro GetPostazioniIncrement, j="+j+" k="+k);
+
+        db.transaction(
+            function (tx3) {
+                tx3.executeSql(righeselect[k]);
+            },
+            onDbError,
+            function () {
+
+                if (k+1==j) {
+                    //alert(i+" clienti inseriti");
+                    $("#Postazioni").removeClass('updating_class');
+                    $("#Postazioni").addClass('updated_class');
+                    //ora chiama quella successiva
+                    console.log("ora passo alle visite");
+                    getVisiteListFromServer();
+                } else {
+                    getPostazioniIncrement(righeselect,k+1);
+                }
+
             }
         );
     }
