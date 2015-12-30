@@ -430,10 +430,12 @@ function onDeviceReady() {
     }
 //per ora lo saltiamo!
     function getUsersListFromServer() {
+        alert("Dentro getUsersListFromServer");
         console.log("Dentro getUsersListFromServer");
         rigaselect='';
         $.getJSON(serviceURL + 'gettableusers.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getUsersListFromServer post success");
+                alert("getUsersListFromServer post success");
 
                 users_server = data.items;
                 var i=0;
