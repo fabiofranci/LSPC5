@@ -430,13 +430,10 @@ function onDeviceReady() {
     }
 //per ora lo saltiamo!
     function getUsersListFromServer() {
-        alert("Dentro getUsersListFromServer");
         console.log("Dentro getUsersListFromServer");
         rigaselect='';
         $.getJSON(serviceURL + 'gettableusers.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getUsersListFromServer post success");
-                alert("getUsersListFromServer post success");
-
                 users_server = data.items;
                 var i=0;
                 $.each(users_server, function (index, user) {
@@ -1821,6 +1818,7 @@ function onDeviceReady() {
     var error='';
     db = window.openDatabase("LASAETTADB", "1.0", "Database La Saetta", 200000);
     try {
+        db.transaction(pulisciDataBase, onDbError, onDbClearSuccess);
         db.transaction(function (tx) {
             tx.executeSql('SELECT * FROM LOCAL_ULTIMOAGGIORNAMENTO', [], function (tx, results) {
                     var len = results.rows.length, i;
