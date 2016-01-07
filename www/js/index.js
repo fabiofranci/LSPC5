@@ -621,7 +621,6 @@ function onDeviceReady() {
                     });
                     $("#SediClienti").removeClass('updating_class');
                     $("#SediClienti").addClass('updated_class');
-                    $("#SediClientiCount").html('('+i+')');
                     //ora chiama quella successiva
                     //alert("chiamerei tiposervizio 2");
                     getTipiServizioListFromServer();
@@ -706,7 +705,6 @@ function onDeviceReady() {
 
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
-        //alert("DEBUG:Dentro getPostazioniListFromServer, global_ultimo_aggiornamento="+global_ultimo_aggiornamento);
         rigaselect='';
         righeselect=new Array();
 
@@ -722,9 +720,9 @@ function onDeviceReady() {
                             righeselect[j]=rigaselect;
                             j=j+1;
                         }
-                        rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome '";
+                        rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, latitudine_p, longitudine_p) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome, '"+postazione.latitudine_p+"' AS latitudine_p, '"+postazione.longitudine_p+"' AS longitudine_p";
                     } else {
-                        rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"'";
+                        rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"','"+postazione.latitudine_p+"','"+postazione.longitudine_p+"'";
                     }
                     i++;
                 });
@@ -735,7 +733,7 @@ function onDeviceReady() {
                 } else {
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
-                    alert("DEBUG:ora passo alle visite 1");
+
                     //ora chiama quella successiva
                     getVisiteListFromServer();
                 }
@@ -748,8 +746,6 @@ function onDeviceReady() {
     function getPostazioniIncrement(righeselect,k) {
         var j=righeselect.length;
         console.log("Dentro GetPostazioniIncrement, j="+j+" k="+k);
-        alert("DEBUG:Dentro GetPostazioniIncrement, j="+j+" k="+k);
-        alert("DEBUG:"+righeselect[k]);
 
         db.transaction(
             function (tx3) {
@@ -762,10 +758,7 @@ function onDeviceReady() {
                     //alert(i+" clienti inseriti");
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
-                    $("#homepostazioni").html('Postazioni: '+i);
-                    $("#PostazioniCount").html('('+i+')');
                     //ora chiama quella successiva
-                    alert("DEBUG:ora passo alle visite 2");
                     console.log("ora passo alle visite");
                     getVisiteListFromServer();
                 } else {
@@ -778,7 +771,6 @@ function onDeviceReady() {
 
     function getVisiteListFromServer() {
         console.log("Dentro getVisiteListFromServer");
-        alert("DEBUG:Dentro getVisiteListFromServer");
      rigaselect='';
         $.getJSON(serviceURL + 'gettablevisite.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getVisiteListFromServer post success");
@@ -793,7 +785,7 @@ function onDeviceReady() {
                     }
                     i++;
                 });
-                alert('DEBUG:'+rigaselect);
+                //alert(rigaselect);
                 console.log(rigaselect);
                 if (rigaselect) {
                     //ora può lanciare la transazione
@@ -1020,7 +1012,7 @@ function onDeviceReady() {
                                 result=confirm("Vuoi aggiungere la postazione alla visita corrente?");
                                 if (result==1) {
                                     db.transaction(
-                                        function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare]); },
+                                        function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,ancora_da_visionare,latitudine,longitudine]); },
                                         onDbError,
                                         function () { alert("ispezione "+codice_ispezione+" inserita");
                                         }
@@ -1100,7 +1092,7 @@ function onDeviceReady() {
     function aggiungiPostazione(nuovapostazione) {
         db.transaction(
             function (tx) {
-                tx.executeSql("INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, ultimo_aggiornamento) VALUES (?,?,?,?,?)",[nuovapostazione.id_sede_cliente, nuovapostazione.id_tipo_servizio, nuovapostazione.codice_postazione, nuovapostazione.nome, nuovapostazione.ultimo_aggiornamento]);
+                tx.executeSql("INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, ultimo_aggiornamento, latitudine_p, longitudine_p) VALUES (?,?,?,?,?,?,?)",[nuovapostazione.id_sede_cliente, nuovapostazione.id_tipo_servizio, nuovapostazione.codice_postazione, nuovapostazione.nome, nuovapostazione.ultimo_aggiornamento,latitudine_corrente,longitudine_corrente]);
             },
             onDbError,
             function () {
@@ -1118,7 +1110,7 @@ function onDeviceReady() {
                         //alert(codice_visita);
                         //alert(ultimo_aggiornamento);
                         db.transaction(
-                            function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione) VALUES (?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare']); },
+                            function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare',latitudine_corrente,longitudine_corrente]); },
                             onDbError,
                             function () { //alert("ispezione "+codice_ispezione+" inserita");
                             }
