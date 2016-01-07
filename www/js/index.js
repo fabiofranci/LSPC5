@@ -734,7 +734,7 @@ function onDeviceReady() {
                 } else {
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
-
+                    alert("DEBUG:ora passo alle visite 1");
                     //ora chiama quella successiva
                     getVisiteListFromServer();
                 }
@@ -762,6 +762,7 @@ function onDeviceReady() {
                     $("#homepostazioni").html('Postazioni: '+i);
                     $("#PostazioniCount").html('('+i+')');
                     //ora chiama quella successiva
+                    alert("DEBUG:ora passo alle visite 2");
                     console.log("ora passo alle visite");
                     getVisiteListFromServer();
                 } else {
