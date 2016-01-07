@@ -757,7 +757,7 @@ function onDeviceReady() {
 
         db.transaction(
             function (tx3) {
-                alert("DEBUG:"+righeselect[k]);
+                //alert("DEBUG:"+righeselect[k]);
                 tx3.executeSql(righeselect[k]);
             },
             onDbError,
