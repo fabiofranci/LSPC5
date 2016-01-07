@@ -673,7 +673,7 @@ function onDeviceReady() {
 
                                 $("#TipiServizio").removeClass('updating_class');
                                 $("#TipiServizio").addClass('updated_class');
-                                alert("chiamerei getPostazioniListFromServer 1");
+                                //alert("chiamerei getPostazioniListFromServer 1");
                                 //ora chiama quella successiva
                                 getPostazioniListFromServer();
                             }
@@ -697,7 +697,7 @@ function onDeviceReady() {
                         $("#TipiServizio").removeClass('updating_class');
                         $("#TipiServizio").addClass('updated_class');
                         //ora chiama quella successiva
-                        alert("chiamerei getPostazioniListFromServer 2");
+                        //alert("chiamerei getPostazioniListFromServer 2");
                         getPostazioniListFromServer();
                     }
                 }
@@ -706,6 +706,7 @@ function onDeviceReady() {
 
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
+        alert("DEBUG:Dentro getPostazioniListFromServer, global_ultimo_aggiornamento="+global_ultimo_aggiornamento);
         rigaselect='';
         righeselect=new Array();
 
