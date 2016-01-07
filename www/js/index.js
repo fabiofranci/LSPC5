@@ -729,8 +729,6 @@ function onDeviceReady() {
                     i++;
                 });
                 //console.log(rigaselect);
-                alert("DEBUG: i="+i+"j="+j);
-                alert("DEBUG:"+rigaselect);
 
                 if (j>0) {
                     getPostazioniIncrement(righeselect,0);
@@ -750,6 +748,8 @@ function onDeviceReady() {
     function getPostazioniIncrement(righeselect,k) {
         var j=righeselect.length;
         console.log("Dentro GetPostazioniIncrement, j="+j+" k="+k);
+        alert("DEBUG:Dentro GetPostazioniIncrement, j="+j+" k="+k);
+        alert("DEBUG:"+righeselect[k]);
 
         db.transaction(
             function (tx3) {
