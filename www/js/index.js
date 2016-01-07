@@ -715,6 +715,12 @@ function onDeviceReady() {
                 var i=0;
                 var j=0;
                 $.each(postazioni_server, function (index, postazione) {
+                    if (postazione.latitudine_p=='') {
+                        postazione.latitudine_p='VUOTA';
+                    }
+                    if (postazione.longitudine_p=='') {
+                        postazione.longitudine_p='VUOTA';
+                    }
                     if (i % 50 ==0) {
                         if (i>0) {
                             righeselect[j]=rigaselect;
@@ -749,6 +755,7 @@ function onDeviceReady() {
 
         db.transaction(
             function (tx3) {
+                alert("DEBUG:"+righeselect[k]);
                 tx3.executeSql(righeselect[k]);
             },
             onDbError,
