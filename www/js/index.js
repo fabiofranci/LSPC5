@@ -706,7 +706,7 @@ function onDeviceReady() {
 
     function getPostazioniListFromServer() {
         console.log("Dentro getPostazioniListFromServer");
-        alert("DEBUG:Dentro getPostazioniListFromServer, global_ultimo_aggiornamento="+global_ultimo_aggiornamento);
+        //alert("DEBUG:Dentro getPostazioniListFromServer, global_ultimo_aggiornamento="+global_ultimo_aggiornamento);
         rigaselect='';
         righeselect=new Array();
 
@@ -722,13 +722,15 @@ function onDeviceReady() {
                             righeselect[j]=rigaselect;
                             j=j+1;
                         }
-                        rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, latitudine_p, longitudine_p) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome, '"+postazione.latitudine_p+"' AS latitudine_p, '"+postazione.longitudine_p+"' AS longitudine_p";
+                        rigaselect="INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome) SELECT '"+postazione.id_sede+"' AS id_sede, '"+postazione.id_servizio+"' AS id_servizio, '"+postazione.codice_postazione+"' as codice_postazione, '"+postazione.nome+"' AS nome '";
                     } else {
-                        rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"','"+postazione.latitudine_p+"','"+postazione.longitudine_p+"'";
+                        rigaselect+=" UNION ALL SELECT '"+postazione.id_sede+"','"+postazione.id_servizio+"','"+postazione.codice_postazione+"','"+postazione.nome+"'";
                     }
                     i++;
                 });
                 //console.log(rigaselect);
+                alert("DEBUG: i="+i+"j="+j);
+                alert("DEBUG:"+rigaselect);
 
                 if (j>0) {
                     getPostazioniIncrement(righeselect,0);
