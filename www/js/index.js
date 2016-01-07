@@ -774,6 +774,7 @@ function onDeviceReady() {
 
     function getVisiteListFromServer() {
         console.log("Dentro getVisiteListFromServer");
+        alert("DEBUG:Dentro getVisiteListFromServer");
      rigaselect='';
         $.getJSON(serviceURL + 'gettablevisite.php?ult='+global_ultimo_aggiornamento, function (data) {
                 console.log("getVisiteListFromServer post success");
@@ -788,7 +789,7 @@ function onDeviceReady() {
                     }
                     i++;
                 });
-                //alert(rigaselect);
+                alert('DEBUG:'+rigaselect);
                 console.log(rigaselect);
                 if (rigaselect) {
                     //ora può lanciare la transazione
