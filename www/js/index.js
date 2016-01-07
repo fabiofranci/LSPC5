@@ -621,6 +621,7 @@ function onDeviceReady() {
                     });
                     $("#SediClienti").removeClass('updating_class');
                     $("#SediClienti").addClass('updated_class');
+                    $("#SediClientiCount").html('('+i+')');
                     //ora chiama quella successiva
                     //alert("chiamerei tiposervizio 2");
                     getTipiServizioListFromServer();
@@ -758,6 +759,8 @@ function onDeviceReady() {
                     //alert(i+" clienti inseriti");
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
+                    $("#homepostazioni").html('Postazioni: '+i);
+                    $("#PostazioniCount").html('('+i+')');
                     //ora chiama quella successiva
                     console.log("ora passo alle visite");
                     getVisiteListFromServer();
