@@ -732,6 +732,8 @@ function onDeviceReady() {
                     }
                     i++;
                 });
+                righeselect[j]=rigaselect;
+                j=j+1;
                 //console.log(rigaselect);
 
                 if (j>0) {
