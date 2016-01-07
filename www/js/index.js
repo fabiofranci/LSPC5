@@ -737,8 +737,9 @@ function onDeviceReady() {
                 //console.log(rigaselect);
 
                 if (j>0) {
-                    getPostazioniIncrement(righeselect,0);
+                    getPostazioniIncrement(righeselect,0,i);
                 } else {
+
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
 
@@ -751,7 +752,7 @@ function onDeviceReady() {
         );
     }
 
-    function getPostazioniIncrement(righeselect,k) {
+    function getPostazioniIncrement(righeselect,k,i) {
         var j=righeselect.length;
         console.log("Dentro GetPostazioniIncrement, j="+j+" k="+k);
 
@@ -765,13 +766,16 @@ function onDeviceReady() {
 
                 if (k+1==j) {
                     //alert(i+" clienti inseriti");
+                    $("#homepostazioni").html('Postazioni: '+i);
+
                     $("#Postazioni").removeClass('updating_class');
                     $("#Postazioni").addClass('updated_class');
+                    $("#PostazioniCount").html(i);
                     //ora chiama quella successiva
                     console.log("ora passo alle visite");
                     getVisiteListFromServer();
                 } else {
-                    getPostazioniIncrement(righeselect,k+1);
+                    getPostazioniIncrement(righeselect,k+1,i);
                 }
 
             }
