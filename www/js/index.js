@@ -1674,7 +1674,7 @@ function onDeviceReady() {
             var res = dataArray[i].name.replace("E_", "");
             dataObj[res] = dataArray[i].value;
             comando[i]=res+"='"+dataArray[i].value+"'";
-            alert(dataArray[i].name+"->"+dataArray[i].value);
+            //alert(dataArray[i].name+"->"+dataArray[i].value);
         }
         //controllo campi obbligatori
         if (dataObj['stato_postazione'] && dataObj['presenza_target_lepidotteri']) {
@@ -1695,6 +1695,42 @@ function onDeviceReady() {
             alert("Inserisci tutti i campi!")
         }
     });
+
+
+    $("#g-SALVA").on('click',function(e){
+        e.preventDefault();
+        var ultimo_aggiornamento=getDateTime();
+        var comando=[];
+        var dataArray = $("#FORMispezioneG").serializeArray(),
+            len = dataArray.length,
+            dataObj = {};
+        for (i=0; i<len; i++) {
+            var res = dataArray[i].name.replace("G_", "");
+            dataObj[res] = dataArray[i].value;
+            comando[i]=res+"='"+dataArray[i].value+"'";
+            //alert(dataArray[i].name+"->"+dataArray[i].value);
+        }
+        //controllo campi obbligatori
+        if (dataObj['stato_postazione'] && dataObj['presenza_target_lepidotteri']) {
+            var stringacomando=comando.join(", ");
+            //alert(stringacomando);
+            db.transaction(
+                function (tx3) { tx3.executeSql("UPDATE LOCAL_ISPEZIONI SET "+stringacomando+",data_ispezione='"+ultimo_aggiornamento+"',ultimo_aggiornamento='"+ultimo_aggiornamento+"' WHERE codice_ispezione=?", [postazioneCorrente.codice_ispezione]); },
+                function () { alert("errore");
+                },
+                function () {
+                    $('#FORMispezioneG').trigger("reset");
+                    AggiornaSuServer();
+                    location.href="#singola_visita?id="+VisitaCorrente.codice_visita;
+                    //alert("ispezione "+postazioneCorrente.codice_ispezione+" aggiornata");
+                }
+            );
+        } else {
+            alert("Inserisci tutti i campi!")
+        }
+    });
+
+
     //---------------------------------------------------------------------------------------
     // (f) Ispezioni
     //---------------------------------------------------------------------------------------
